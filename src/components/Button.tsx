@@ -8,7 +8,9 @@ type ButtonProps = {
 export default function Button({ color, textColor = 'white', content, onClick }: ButtonProps) {
   return (
     <button
-      className={'flex w-full h-12 items-center justify-center rounded-[10px] text-normal'}
+      className={
+        'flex w-full h-12 items-center justify-center rounded-[10px] text-normal font-semibold'
+      }
       style={{ backgroundColor: color, color: textColor }}
       onClick={onClick}
     >
