@@ -4,14 +4,14 @@ import Counter from '@/components/Counter';
 import Header from '@/components/Header';
 import { useState } from 'react';
 
-export default function Auto() {
+export default function Dedenjji() {
   const [people, setPeople] = useState(0);
   const [team, setTeam] = useState(0);
 
   return (
     <div>
       <Header
-        title="자동"
+        title="데덴찌"
         goHome={false}
         canSet={true}
         onSet={() => {
@@ -20,10 +20,8 @@ export default function Auto() {
       ></Header>
       <div className="my-20">
         <Counter count={people} objectName="인원 수" onChange={setPeople}></Counter>
-        <div className="h-6"></div>
-        <Counter count={team} objectName="팀 수" onChange={setTeam}></Counter>
       </div>
-      <Button color="var(--color-menuRed)" content="나누기" onClick={() => {}}></Button>
+      <Button color="var(--color-menuGreen)" content="나누기" onClick={() => {}}></Button>
     </div>
   );
 }

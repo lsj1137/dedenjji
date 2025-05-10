@@ -1,0 +1,42 @@
+'use client';
+import Button from '@/components/Button';
+import Counter from '@/components/Counter';
+import Header from '@/components/Header';
+import Link from 'next/link';
+import { useState } from 'react';
+
+export default function Draw() {
+  const [people, setPeople] = useState(0);
+  const [win, setWin] = useState(0);
+
+  return (
+    <div>
+      <Header
+        title="제비뽑기"
+        goHome={false}
+        canSet={true}
+        onSet={() => {
+          console.log('hi');
+        }}
+      ></Header>
+      <div className="my-20">
+        <Counter count={people} objectName="제비 수" onChange={setPeople}></Counter>
+        <div className="h-6"></div>
+        <Counter count={win} objectName="당첨(또는 꽝) 수" onChange={setWin}></Counter>
+      </div>
+      <Link
+        href={{
+          pathname: '/draw/draw-result',
+          query: { total: people, win: win },
+        }}
+      >
+        <Button
+          color="var(--color-menuYellow)"
+          content="뽑기"
+          onClick={() => {}}
+          textColor="black"
+        ></Button>
+      </Link>
+    </div>
+  );
+}
