@@ -1,11 +1,18 @@
 type ButtonProps = {
   color?: string;
   textColor?: string;
-  content: string;
+  content?: string;
+  children?: React.ReactNode;
   onClick: () => void;
 };
 
-export default function Button({ color, textColor = 'white', content, onClick }: ButtonProps) {
+export default function Button({
+  color,
+  textColor = 'white',
+  content,
+  onClick,
+  children,
+}: ButtonProps) {
   return (
     <button
       className={
@@ -15,6 +22,7 @@ export default function Button({ color, textColor = 'white', content, onClick }:
       onClick={onClick}
     >
       {content}
+      {children}
     </button>
   );
 }
