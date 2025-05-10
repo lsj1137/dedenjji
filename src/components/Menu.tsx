@@ -22,30 +22,36 @@ export default function Menu() {
           </Link>
         </div>
         <div className="transform rotate-3 translate-y-3.5 -translate-x-1.5 z-40">
-          <Option
-            color="var(--color-menuYellow)"
-            title="제비뽑기"
-            content="여러 개의 선택지 중에 하나씩 선택하며 결과를 확인합니다."
-            icon={<FontAwesomeIcon icon={faFlag} size="4x"></FontAwesomeIcon>}
-          ></Option>
+          <Link href="/draw">
+            <Option
+              color="var(--color-menuYellow)"
+              title="제비뽑기"
+              content="여러 개의 선택지 중에 하나씩 선택하며 결과를 확인합니다."
+              icon={<FontAwesomeIcon icon={faFlag} size="4x"></FontAwesomeIcon>}
+            ></Option>
+          </Link>
         </div>
       </div>
       <div className="flex">
         <div className="transform rotate-3 translate-x-1.5 z-20">
-          <Option
-            color="var(--color-menuBlue)"
-            title="가위바위보"
-            content="여럿이 함께 가위바위보를 합니다."
-            icon={<RockScissorPaper />}
-          ></Option>
+          <Link href="/rock-scissor-paper">
+            <Option
+              color="var(--color-menuBlue)"
+              title="가위바위보"
+              content="여럿이 함께 가위바위보를 합니다."
+              icon={<RockScissorPaper />}
+            ></Option>
+          </Link>
         </div>
         <div className="transform -rotate-3 translate-y-3.5 -translate-x-1.5 z-30">
-          <Option
-            color="var(--color-menuGreen)"
-            title="데덴찌"
-            content="본인의 선택에 따라 두 팀 중 하나에 소속됩니다."
-            icon={<Dedenjji />}
-          ></Option>
+          <Link href="/dedenjji">
+            <Option
+              color="var(--color-menuGreen)"
+              title="데덴찌"
+              content="본인의 선택에 따라 두 팀 중 하나에 소속됩니다."
+              icon={<Dedenjji />}
+            ></Option>
+          </Link>
         </div>
       </div>
     </div>
