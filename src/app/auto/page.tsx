@@ -2,6 +2,7 @@
 import Button from '@/components/Button';
 import Counter from '@/components/Counter';
 import Header from '@/components/Header';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Auto() {
@@ -23,7 +24,14 @@ export default function Auto() {
         <div className="h-6"></div>
         <Counter count={team} objectName="팀 수" onChange={setTeam}></Counter>
       </div>
-      <Button color="var(--color-menuRed)" content="나누기" onClick={() => {}}></Button>
+      <Link
+        href={{
+          pathname: '/auto/share-link',
+          query: { total: people },
+        }}
+      >
+        <Button color="var(--color-menuRed)" content="나누기" onClick={() => {}}></Button>
+      </Link>
     </div>
   );
 }
