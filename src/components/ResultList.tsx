@@ -2,7 +2,7 @@ import { Team } from '@/app/auto/result/AutoResult';
 
 export default function ResultList({ teams }: { teams: Team[] }) {
   return (
-    <div className=" flex flex-col w-full p-5 bg-white rounded-[10px] my-[30px]">
+    <div className=" flex flex-col w-[calc(100%-40px)] p-5 bg-white rounded-[10px] my-[30px]">
       {teams.map((team, i) => (
         <div className="flex flex-col w-full items-center text-center" key={i}>
           <div className="flex flex-col gap-2">
