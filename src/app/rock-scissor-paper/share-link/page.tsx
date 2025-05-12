@@ -15,7 +15,7 @@ export default function ShareLink() {
     <div>
       <Header title="가위바위보" goHome={false} canSet={true} onSet={() => {}}></Header>
       <Connects color="var(--color-menuRed)" currentUser={currentUser} totalUsers={Number(total)} />
-      <Share shareUrl="https://www.3jun.store" qrImgUrl="https://www.3jun.store"></Share>
+      <Share shareUrl="https://www.3jun.store"></Share>
     </div>
   );
 }
