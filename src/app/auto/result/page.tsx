@@ -25,13 +25,16 @@ export default function ShareLink() {
   const socket = getSocket();
 
   socket.on('roomJoined', info => {
-    console.log(info);
     setCurrentUser(info.participants.length);
   });
 
   socket.on('roomExited', info => {
-    console.log(info);
     setCurrentUser(info.participants.length);
+  });
+
+  socket.on('receiveResult', result => {
+    setResult(result);
+    setShowResult(true);
   });
 
   useEffect(() => {
@@ -81,7 +84,7 @@ export default function ShareLink() {
             color="var(--color-menuRed)"
             onClick={async () => {
               let teamSplitResult = await splitTeams(Number(total), Number(team));
-              console.log(teamSplitResult);
+              socket.emit('sendResult', teamSplitResult);
               setResult(teamSplitResult);
               setShowResult(true);
             }}

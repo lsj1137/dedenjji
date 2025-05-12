@@ -23,11 +23,7 @@ export async function splitTeams(total: number, teamCount: number): Promise<Resu
   const peoplePerTeam = total / teamCount;
   for (let i = 0; i < teamCount; i++) {
     let teamMembers = allMembers.slice(i * peoplePerTeam, (i + 1) * peoplePerTeam);
-    if (
-      teamMembers.find(member => {
-        member.userId === myId;
-      }) !== undefined
-    ) {
+    if (teamMembers.find(member => member.userId === myId) !== undefined) {
       myTeamId = i;
     }
     teams[i] = {

@@ -12,7 +12,11 @@ export default function RockScissorPaper() {
   return (
     <div>
       <Header title="가위바위보" goHome={false} canSet={false}></Header>
-      <div className="my-20">
+      <div className=" flex flex-col items-center justify-center h-[300px] font-bold text-center gap-5">
+        <p className="text-5xl ">⛏️</p>
+        <p className="text-xl ">개발중입니다..</p>
+      </div>
+      {/* <div className="my-20">
         <Counter count={people} objectName="인원 수" onChange={setPeople}></Counter>
       </div>
       <Link
@@ -22,7 +26,7 @@ export default function RockScissorPaper() {
         }}
       >
         <Button color="var(--color-menuBlue)" content="결투 시작" onClick={() => {}}></Button>
-      </Link>
+      </Link> */}
     </div>
   );
 }
