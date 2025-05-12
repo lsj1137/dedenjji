@@ -1,0 +1,82 @@
+import { Result, Team } from '@/app/auto/result/AutoResult';
+import { getSocket } from './socket';
+import { animalTeams, TeamType } from './teamTypes';
+
+type participantsResponse = { id: string; participants: { userId: string; name: string }[] };
+type teamInfo = { name: string; icon: string };
+
+export async function splitTeams(total: number, teamCount: number): Promise<Result> {
+  let response: participantsResponse = await getRoomMembers();
+  let myRoom = response.participants;
+  let myId = response.id;
+  let myTeamId = 0;
+
+  let allMembers: { userId: string; name: string }[] = Array.from(new Array(total), (_, i) => {
+    if (i < myRoom.length) {
+      return myRoom[i];
+    }
+    return { userId: (i + 1).toString(), name: `멤버 ${i + 1}` };
+  });
+  allMembers.sort(() => Math.random() - 0.5);
+  let teams: Team[] = new Array(teamCount);
+  let teamInfos: teamInfo[] = generateTeamInfo(teamCount, TeamType.Animals);
+  const peoplePerTeam = total / teamCount;
+  for (let i = 0; i < teamCount; i++) {
+    let teamMembers = allMembers.slice(i * peoplePerTeam, (i + 1) * peoplePerTeam);
+    if (
+      teamMembers.find(member => {
+        member.userId === myId;
+      }) !== undefined
+    ) {
+      myTeamId = i;
+    }
+    teams[i] = {
+      id: i,
+      name: teamInfos[i].name,
+      icon: teamInfos[i].icon,
+      members: teamMembers.map(member => {
+        return {
+          id: member.userId,
+          nickname: member.name,
+        };
+      }),
+    };
+  }
+
+  return { myId, myTeamId, teams };
+}
+
+function getRoomMembers(): Promise<participantsResponse> {
+  let socket = getSocket();
+  return new Promise((resolve, reject) => {
+    socket.emit('getRoomMembers', {}, (response: participantsResponse) => {
+      resolve(response);
+    });
+
+    setTimeout(() => {
+      reject(new Error('서버 응답 시간 초과'));
+    }, 3000);
+  });
+}
+
+function generateTeamInfo(teamCount: number, type: TeamType): teamInfo[] {
+  let candidates: string[][] = [];
+  switch (type) {
+    case TeamType.Animals:
+      candidates = animalTeams();
+      break;
+    case TeamType.Colors:
+      break;
+    case TeamType.Numbers:
+      break;
+    case TeamType.Countries:
+      break;
+    default:
+      throw new Error('Invalid team type');
+  }
+  let mixedTeams = candidates.sort(() => Math.random() - 0.5);
+  let teamInfo = mixedTeams.slice(0, teamCount).map(team => {
+    return { icon: team[0], name: team[1] };
+  });
+  return teamInfo;
+}
