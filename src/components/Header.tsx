@@ -17,7 +17,10 @@ export default function Header({ goHome, canSet, onSet, title }: HeaderProps) {
   const router = useRouter();
   return (
     <header className="flex justify-between items-center py-4">
-      <button onClick={goHome ? () => router.push('/') : () => router.back()} className="flex p-4">
+      <button
+        onClick={goHome ? () => router.push('/') : () => router.back()}
+        className="flex p-4 gap-2"
+      >
         <FontAwesomeIcon icon={faChevronLeft} />
         {goHome && <FontAwesomeIcon icon={faHome} />}
       </button>
@@ -27,7 +30,7 @@ export default function Header({ goHome, canSet, onSet, title }: HeaderProps) {
           <FontAwesomeIcon icon={faGear} />
         </button>
       ) : (
-        <div className="w-12"></div>
+        <div className="w-12 h-1"></div>
       )}
     </header>
   );

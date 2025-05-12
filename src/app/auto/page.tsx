@@ -26,8 +26,8 @@ export default function Auto() {
       </div>
       <Link
         href={{
-          pathname: '/auto/share-link',
-          query: { total: people },
+          pathname: '/auto/result',
+          query: { total: people, team },
         }}
       >
         <Button color="var(--color-menuRed)" content="나누기" onClick={() => {}}></Button>
