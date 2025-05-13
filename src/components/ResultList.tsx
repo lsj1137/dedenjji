@@ -9,7 +9,7 @@ export default function ResultList({ teams }: { teams: Team[] }) {
             <p>
               {team.icon} {team.name} 팀
             </p>
-            <div className="flex gap-1">
+            <div className="flex justify-center gap-1">
               {team.members.map((member, j) => (
                 <p key={j}>
                   {member.nickname}

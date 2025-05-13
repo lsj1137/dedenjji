@@ -5,9 +5,8 @@ import Connects from '@/components/Connects';
 import Header from '@/components/Header';
 import Share from '@/components/Share';
 import { getRandomRoomId, getSocket } from '@/utils/socket';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AutoResult, { Result } from './AutoResult';
 import { splitTeams } from '@/utils/autoSplitting';
 
@@ -21,6 +20,7 @@ export default function ShareLink() {
   const [currentUser, setCurrentUser] = useState<number>(0);
   const [showResult, setShowResult] = useState<boolean>(false);
   const [splitResult, setResult] = useState<Result>();
+  const resultRef = useRef(splitResult);
 
   const socket = getSocket();
 
@@ -35,6 +35,22 @@ export default function ShareLink() {
   socket.on('receiveResult', result => {
     setResult(result);
     setShowResult(true);
+  });
+
+  socket.on('nameChanged', ({ id, newName }: { id: string; newName: string }) => {
+    let newTeams = [...resultRef.current!.teams];
+    newTeams.map(team => {
+      let changedMate = team.members.find(member => member.id === id);
+      if (changedMate) {
+        changedMate.nickname = newName;
+      }
+    });
+    resultRef.current!.teams = newTeams;
+    const newResult = {
+      ...resultRef.current!,
+      teams: newTeams,
+    };
+    setResult(newResult);
   });
 
   useEffect(() => {
@@ -56,6 +72,10 @@ export default function ShareLink() {
     };
   }, []);
 
+  useEffect(() => {
+    resultRef.current = splitResult;
+  }, [splitResult]);
+
   return (
     <div className="h-full">
       <Header title="자동" goHome={false} canSet={true} onSet={() => {}}></Header>
@@ -65,6 +85,9 @@ export default function ShareLink() {
           myId={splitResult?.myId ?? '0'}
           myTeamId={splitResult?.myTeamId ?? 0}
           teams={splitResult?.teams ?? []}
+          changeName={(newName: string) => {
+            socket?.emit('changeName', newName);
+          }}
         ></AutoResult>
       ) : (
         <Share shareUrl={shareUrl}></Share>
@@ -72,7 +95,7 @@ export default function ShareLink() {
       <div className="absolute bottom-5 w-[400px]">
         {showResult ? (
           <Button
-            content={`팀 다시 나누기 ( ${currentUser} / ${total} )`}
+            content={'팀 다시 나누기'}
             color="var(--color-menuRed)"
             onClick={() => {
               setShowResult(false);

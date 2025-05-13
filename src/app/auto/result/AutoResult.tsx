@@ -10,6 +10,7 @@ export type Result = {
   myId: string;
   myTeamId: number;
   teams: Team[];
+  changeName?: Function;
 };
 
 export type Team = {
@@ -24,28 +25,14 @@ export type TeamMate = {
   nickname: string;
 };
 
-export default function AutoResult({ myId, myTeamId, teams }: Result) {
+export default function AutoResult({ myId, myTeamId, teams, changeName }: Result) {
   let myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정팀';
   let myTeamIcon = teams.find(team => team.id === myTeamId)?.icon ?? '🐼';
-  const [displayingTeams, setTeams] = useState(teams);
   const [myName, setMyName] = useState(
     teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)
       ?.nickname ?? '멤버 0'
   );
   let [canChangeName, setCanChangeName] = useState(false);
-  let socket = getSocket();
-
-  socket.on('nameChanged', ({ id, newName }: { id: string; newName: string }) => {
-    let newTeams = [...displayingTeams];
-    newTeams.map(team => {
-      console.log(team);
-      let changedMate = team.members.find(member => member.id === id);
-      if (changedMate) {
-        changedMate.nickname = newName;
-      }
-    });
-    setTeams(newTeams);
-  });
 
   return (
     <div className="flex flex-col items-center">
@@ -68,7 +55,7 @@ export default function AutoResult({ myId, myTeamId, teams }: Result) {
         <button
           onClick={() => {
             if (canChangeName) {
-              socket?.emit('changeName', myName);
+              changeName!(myName);
             }
             setCanChangeName(!canChangeName);
           }}
@@ -80,7 +67,7 @@ export default function AutoResult({ myId, myTeamId, teams }: Result) {
           )}
         </button>
       </div>
-      <ResultList teams={displayingTeams}></ResultList>
+      <ResultList teams={teams}></ResultList>
     </div>
   );
 }
