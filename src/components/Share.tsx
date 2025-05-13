@@ -1,38 +1,33 @@
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
-import Script from 'next/script';
-import { useEffect, useState } from 'react';
+import { useQRCode } from 'next-qrcode';
 
 type ShareProps = {
   shareUrl: string;
 };
 
-declare var QRCode: any;
-
 export default function Share({ shareUrl }: ShareProps) {
-  const [ready, setReady] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (ready) {
-      new QRCode(document.getElementById('qrcode'), {
-        text: shareUrl,
-      });
-    }
-  }, [ready, shareUrl]);
+  const { Image } = useQRCode();
 
   return (
     <div className="absolute w-[400px] top-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
-      <Script
-        src="/qrcode.min.js"
-        strategy="afterInteractive"
-        onLoad={() => setReady(true)}
-      ></Script>
       <p className="text-normal my-4 font-semibold">참가자들을 방으로 초대하세요!</p>
-      <div
-        id="qrcode"
-        className="flex justify-center items-center w-[200px] h-[200px] p-5 bg-white"
-      ></div>
+      {shareUrl && (
+        <Image
+          text={shareUrl}
+          options={{
+            errorCorrectionLevel: 'M',
+            margin: 5,
+            scale: 4,
+            width: 200,
+            color: {
+              dark: '#000000',
+              light: '#ffffff',
+            },
+          }}
+        />
+      )}
       <p className="my-4  font-semibold">또는</p>
       <Button
         onClick={() => {

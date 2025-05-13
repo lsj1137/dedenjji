@@ -26,7 +26,7 @@ export default function Draw() {
       </div>
       <Link
         href={{
-          pathname: '/draw/draw-result',
+          pathname: '/draw/result',
           query: { total: people, win: win },
         }}
       >

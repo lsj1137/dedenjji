@@ -1,13 +1,13 @@
 'use client';
-import Button from '@/components/Button';
-import Counter from '@/components/Counter';
+// import Button from '@/components/Button';
+// import Counter from '@/components/Counter';
 import Header from '@/components/Header';
-import Link from 'next/link';
-import { useState } from 'react';
+// import Link from 'next/link';
+// import { useState } from 'react';
 
 export default function RockScissorPaper() {
-  const [people, setPeople] = useState(0);
-  const [team, setTeam] = useState(0);
+  // const [people, setPeople] = useState(0);
+  // const [team, setTeam] = useState(0);
 
   return (
     <div>

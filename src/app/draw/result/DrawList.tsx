@@ -1,6 +1,6 @@
 'use client';
 import Card from '@/components/Card';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import Button from '@/components/Button';
@@ -25,12 +25,12 @@ export default function DrawList({ total, win }: DrawListProps) {
   const [remainingWinner, setRemainingWinner] = useState<number>(win);
 
   const width = 200;
-  let height: number = 400;
+  const height = useRef(400);
 
   useEffect(() => {
     const newCards = mixCards(total, remainingWinner);
     setCards(newCards);
-    height = window.innerHeight - 178;
+    height.current = (window.innerHeight - 178) / 2;
   }, [total]);
 
   return (
@@ -41,7 +41,7 @@ export default function DrawList({ total, win }: DrawListProps) {
           key={card.num}
           style={{
             left: `calc(50% + ${-400 / 2 + card.x * width}px)`,
-            top: `${178 + card.y * height}px`,
+            top: `${178 + card.y * height.current}px`,
             rotate: `${card.angle}deg`,
             zIndex: card !== selected ? index : 100,
           }}
@@ -102,9 +102,8 @@ function getRandomHexColor(): string {
 }
 
 function mixCards(total: number, win: number, cards?: DrawItem[]): DrawItem[] {
-  let arr: number[] = Array.from(new Array(total), (_, i) => i);
+  const arr: number[] = Array.from(new Array(total), (_, i) => i);
   arr.sort(() => Math.random() - 0.5);
-  console.log(arr);
   return Array.from(cards || new Array(total), (_, i) => {
     return {
       x: Math.random(),

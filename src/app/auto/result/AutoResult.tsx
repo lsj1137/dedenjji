@@ -4,13 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
 import { useState } from 'react';
-import { getSocket } from '@/utils/socket';
 
 export type Result = {
   myId: string;
   myTeamId: number;
   teams: Team[];
-  changeName?: Function;
+  changeName?: (newName: string) => void;
 };
 
 export type Team = {
@@ -26,13 +25,13 @@ export type TeamMate = {
 };
 
 export default function AutoResult({ myId, myTeamId, teams, changeName }: Result) {
-  let myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정팀';
-  let myTeamIcon = teams.find(team => team.id === myTeamId)?.icon ?? '🐼';
+  const myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정팀';
+  const myTeamIcon = teams.find(team => team.id === myTeamId)?.icon ?? '🐼';
   const [myName, setMyName] = useState(
     teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)
       ?.nickname ?? '멤버 0'
   );
-  let [canChangeName, setCanChangeName] = useState(false);
+  const [canChangeName, setCanChangeName] = useState(false);
 
   return (
     <div className="flex flex-col items-center">

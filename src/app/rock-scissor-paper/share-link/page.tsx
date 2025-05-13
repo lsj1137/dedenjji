@@ -1,21 +1,10 @@
-'use client';
+import { Suspense } from 'react';
+import ShareLink from './ShareLink';
 
-import Connects from '@/components/Connects';
-import Header from '@/components/Header';
-import Share from '@/components/Share';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-
-export default function ShareLink() {
-  const searchParams = useSearchParams();
-  const total = searchParams.get('total');
-  const [currentUser, setCurrentUser] = useState(0);
-
+export default function Page() {
   return (
-    <div>
-      <Header title="가위바위보" goHome={false} canSet={true} onSet={() => {}}></Header>
-      <Connects color="var(--color-menuRed)" currentUser={currentUser} totalUsers={Number(total)} />
-      <Share shareUrl="https://www.3jun.store"></Share>
-    </div>
+    <Suspense fallback={<p>로딩 중...</p>}>
+      <ShareLink />
+    </Suspense>
   );
 }

@@ -4,7 +4,7 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 type CounterProps = {
   objectName: string;
   count: number;
-  onChange: (v: any) => void;
+  onChange: (v: number) => void;
 };
 
 export default function Counter({ objectName, count, onChange }: CounterProps) {

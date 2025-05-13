@@ -1,7 +1,7 @@
 'use client';
 
 import Header from '@/components/Header';
-import DrawList from './draw-list';
+import DrawList from './DrawList';
 import { useSearchParams } from 'next/navigation';
 
 export default function DrawResult() {

@@ -6,23 +6,23 @@ type participantsResponse = { id: string; participants: { userId: string; name: 
 type teamInfo = { name: string; icon: string };
 
 export async function splitTeams(total: number, teamCount: number): Promise<Result> {
-  let response: participantsResponse = await getRoomMembers();
-  let myRoom = response.participants;
-  let myId = response.id;
+  const response: participantsResponse = await getRoomMembers();
+  const myRoom = response.participants;
+  const myId = response.id;
   let myTeamId = 0;
 
-  let allMembers: { userId: string; name: string }[] = Array.from(new Array(total), (_, i) => {
+  const allMembers: { userId: string; name: string }[] = Array.from(new Array(total), (_, i) => {
     if (i < myRoom.length) {
       return myRoom[i];
     }
     return { userId: (i + 1).toString(), name: `멤버 ${i + 1}` };
   });
   allMembers.sort(() => Math.random() - 0.5);
-  let teams: Team[] = new Array(teamCount);
-  let teamInfos: teamInfo[] = generateTeamInfo(teamCount, TeamType.Animals);
+  const teams: Team[] = new Array(teamCount);
+  const teamInfos: teamInfo[] = generateTeamInfo(teamCount, TeamType.Animals);
   const peoplePerTeam = total / teamCount;
   for (let i = 0; i < teamCount; i++) {
-    let teamMembers = allMembers.slice(i * peoplePerTeam, (i + 1) * peoplePerTeam);
+    const teamMembers = allMembers.slice(i * peoplePerTeam, (i + 1) * peoplePerTeam);
     if (teamMembers.find(member => member.userId === myId) !== undefined) {
       myTeamId = i;
     }
@@ -43,7 +43,7 @@ export async function splitTeams(total: number, teamCount: number): Promise<Resu
 }
 
 function getRoomMembers(): Promise<participantsResponse> {
-  let socket = getSocket();
+  const socket = getSocket();
   return new Promise((resolve, reject) => {
     socket.emit('getRoomMembers', {}, (response: participantsResponse) => {
       resolve(response);
@@ -70,8 +70,8 @@ function generateTeamInfo(teamCount: number, type: TeamType): teamInfo[] {
     default:
       throw new Error('Invalid team type');
   }
-  let mixedTeams = candidates.sort(() => Math.random() - 0.5);
-  let teamInfo = mixedTeams.slice(0, teamCount).map(team => {
+  const mixedTeams = candidates.sort(() => Math.random() - 0.5);
+  const teamInfo = mixedTeams.slice(0, teamCount).map(team => {
     return { icon: team[0], name: team[1] };
   });
   return teamInfo;
