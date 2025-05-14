@@ -1,6 +1,5 @@
 'use client';
 
-import Button from '@/components/Button';
 import Connects from '@/components/Connects';
 import Header from '@/components/Header';
 import Share from '@/components/Share';
@@ -8,18 +7,23 @@ import { getRandomRoomId, getSocket } from '@/utils/socket';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import AutoResult, { Result } from '../../auto/result/AutoResult';
-import { splitTeams } from '@/utils/autoSplitting';
+import Play from '@/components/Play';
+import RspOptions from './DdjOptions';
+import Button from '@/components/Button';
 
-export default function ShareLink() {
+export default function RspRoom() {
   const searchParams = useSearchParams();
   const total = searchParams.get('total');
-  const team = searchParams.get('team');
   const inviteCode = searchParams.get('inviteCode');
   const [shareUrl, setUrl] = useState('');
   const [currentUser, setCurrentUser] = useState<number>(0);
+  const [allJoined, setAllJoined] = useState<boolean>(false);
   const [showResult, setShowResult] = useState<boolean>(false);
   const [splitResult, setResult] = useState<Result>();
+  const [countDown, setCountDown] = useState<number>(3);
+  const [selected, setSelected] = useState<string>('');
   const resultRef = useRef(splitResult);
+  const timerInterval = useRef<NodeJS.Timeout>(null);
 
   const socket = getSocket();
 
@@ -41,7 +45,7 @@ export default function ShareLink() {
     newTeams.map(team => {
       const changedMate = team.members.find(member => member.id === id);
       if (changedMate) {
-        changedMate.nickname = newName;
+        changedMate.name = newName;
       }
     });
     resultRef.current!.teams = newTeams;
@@ -62,7 +66,7 @@ export default function ShareLink() {
     }
     socket.emit('joinRoom', {
       roomId: inviteCode ?? tempCode,
-      nickname: `멤버 ${currentUser + 1}`,
+      name: `멤버 ${currentUser + 1}`,
     });
     return () => {
       socket.emit('leaveRoom');
@@ -73,44 +77,64 @@ export default function ShareLink() {
     resultRef.current = splitResult;
   }, [splitResult]);
 
+  useEffect(() => {
+    if (currentUser === Number(total)) {
+      setAllJoined(true);
+      timerInterval.current = setInterval(() => {
+        setCountDown(prev => {
+          if (prev > 0) {
+            return prev - 1;
+          } else return prev;
+        });
+      }, 1000);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (countDown < 1) {
+      setShowResult(true);
+      if (timerInterval.current) {
+        clearInterval(timerInterval.current);
+      }
+    }
+  }, [countDown]);
+
   return (
     <div className="h-full">
-      <Header title="자동" goHome={false} canSet={true} onSet={() => {}}></Header>
-      <Connects color="var(--color-menuRed)" currentUser={currentUser} totalUsers={Number(total)} />
-      {showResult ? (
-        <AutoResult
-          myId={splitResult?.myId ?? '0'}
-          myTeamId={splitResult?.myTeamId ?? 0}
-          teams={splitResult?.teams ?? []}
-          changeName={(newName: string) => {
-            socket?.emit('changeName', newName);
-          }}
-        ></AutoResult>
+      <Header title="데덴찌" goHome={false} canSet={true} onSet={() => {}}></Header>
+      <Connects
+        color="var(--color-textGreen)"
+        currentUser={currentUser}
+        totalUsers={Number(total)}
+      />
+      {allJoined ? (
+        showResult ? (
+          <AutoResult
+            myId={splitResult?.myId ?? '0'}
+            myTeamId={splitResult?.myTeamId ?? 0}
+            teams={splitResult?.teams ?? []}
+            changeName={(newName: string) => {
+              socket?.emit('changeName', newName);
+            }}
+          ></AutoResult>
+        ) : (
+          <Play
+            count={countDown}
+            options={<RspOptions selected={selected} setSelected={setSelected}></RspOptions>}
+          ></Play>
+        )
       ) : (
         <Share shareUrl={shareUrl}></Share>
       )}
-      <div className="absolute bottom-5 w-[400px]">
-        {showResult ? (
-          <Button
-            content={'팀 다시 나누기'}
-            color="var(--color-menuRed)"
-            onClick={() => {
-              setShowResult(false);
-            }}
-          ></Button>
-        ) : (
-          <Button
-            content="팀 확인하기"
-            color="var(--color-menuRed)"
-            onClick={async () => {
-              const teamSplitResult = await splitTeams(Number(total), Number(team));
-              socket.emit('sendResult', teamSplitResult);
-              setResult(teamSplitResult);
-              setShowResult(true);
-            }}
-          ></Button>
-        )}
-      </div>
+      {showResult && (
+        <Button
+          content={'재경기'}
+          color="var(--color-menuGreen)"
+          onClick={() => {
+            setShowResult(false);
+          }}
+        ></Button>
+      )}
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
-import ShareLink from './ShareLink';
+import DdjRoom from './DdjRoom';
 
 export default function Page() {
   return (
     <Suspense fallback={<p>로딩 중...</p>}>
-      <ShareLink />
+      <DdjRoom />
     </Suspense>
   );
 }

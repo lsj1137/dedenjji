@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
-import ShareLink from './ShareLink';
+import RspRoom from './RspRoom';
 
 export default function Page() {
   return (
     <Suspense fallback={<p>로딩 중...</p>}>
-      <ShareLink />
+      <RspRoom />
     </Suspense>
   );
 }
