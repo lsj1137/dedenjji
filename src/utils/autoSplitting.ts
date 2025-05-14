@@ -33,7 +33,7 @@ export async function splitTeams(total: number, teamCount: number): Promise<Resu
       members: teamMembers.map(member => {
         return {
           id: member.userId,
-          nickname: member.name,
+          name: member.name,
         };
       }),
     };

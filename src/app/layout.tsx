@@ -13,8 +13,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex bg-bgGray w-dvw h-dvh font-pretendard justify-center items-center">
-        <div className=" flex flex-col w-[400px] h-dvh">{children}</div>
+      <body className="flex bg-bgGray w-dvw h-full font-pretendard justify-center items-center">
+        <div className=" flex flex-col w-[400px] h-full">{children}</div>
       </body>
     </html>
   );

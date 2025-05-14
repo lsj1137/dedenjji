@@ -21,15 +21,15 @@ export type Team = {
 
 export type TeamMate = {
   id: string;
-  nickname: string;
+  name: string;
 };
 
 export default function AutoResult({ myId, myTeamId, teams, changeName }: Result) {
-  const myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정팀';
+  const myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정';
   const myTeamIcon = teams.find(team => team.id === myTeamId)?.icon ?? '🐼';
   const [myName, setMyName] = useState(
-    teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)
-      ?.nickname ?? '멤버 0'
+    teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)?.name ??
+      '멤버 0'
   );
   const [canChangeName, setCanChangeName] = useState(false);
 
