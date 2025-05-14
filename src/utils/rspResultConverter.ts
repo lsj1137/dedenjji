@@ -1,4 +1,4 @@
-import { Result, Team, TeamMate } from '@/app/auto/result/AutoResult';
+import { TeamMate } from '@/app/auto/result/AutoResult';
 import { RspResultType } from '@/app/rock-scissor-paper/result/RspResult';
 
 export type rspResponse = {
@@ -12,7 +12,7 @@ export type rspResponse = {
 };
 
 export function toResult(id: string, result: rspResponse): RspResultType {
-  let newResult: RspResultType = {
+  const newResult: RspResultType = {
     myId: id,
     myTeamId: 0,
     win: result.type === 'draw' ? 'draw' : result.winChoice === result.choice ? 'win' : 'lose',

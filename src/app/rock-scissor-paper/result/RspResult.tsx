@@ -3,7 +3,7 @@ import ResultImage from '@/components/ResultImage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Team } from '@/app/auto/result/AutoResult';
 
 export type RspResultType = {

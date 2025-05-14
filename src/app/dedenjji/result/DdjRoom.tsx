@@ -2,7 +2,7 @@
 
 import Connects from '@/components/Connects';
 import Header from '@/components/Header';
-import Share from '@/components/Share';
+// import Share from '@/components/Share';
 import { getRandomRoomId, getSocket } from '@/utils/socket';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -124,7 +124,14 @@ export default function RspRoom() {
           ></Play>
         )
       ) : (
-        <Share shareUrl={shareUrl}></Share>
+        <>
+          <div className=" flex flex-col items-center justify-center h-[300px] font-bold text-center gap-5">
+            <p className="text-5xl ">⛏️</p>
+            <p className="text-xl ">개발중입니다..</p>
+            <p className="hidden">{shareUrl}</p>
+          </div>
+          {/* <Share shareUrl={shareUrl}></Share> */}
+        </>
       )}
       {showResult && (
         <Button

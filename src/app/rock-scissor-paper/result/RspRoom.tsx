@@ -30,7 +30,7 @@ export default function RspRoom() {
   const socket = getSocket();
 
   function rspResultHandler(result: rspResponse) {
-    let newResult: RspResultType = toResult(socket.id ?? '', result);
+    const newResult: RspResultType = toResult(socket.id ?? '', result);
     setResult(newResult);
     setShowResult(true);
   }
