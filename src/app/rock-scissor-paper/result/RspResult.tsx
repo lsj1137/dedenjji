@@ -4,29 +4,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
 import { useState } from 'react';
+import { Team } from '@/app/auto/result/AutoResult';
 
-export type Result = {
+export type RspResultType = {
   myId: string;
   myTeamId: number;
+  win: string;
   teams: Team[];
   changeName?: (newName: string) => void;
 };
 
-export type Team = {
-  id: number;
-  name: string;
-  icon: string;
-  members: TeamMate[];
-};
-
-export type TeamMate = {
-  id: string;
-  name: string;
-};
-
-export default function AutoResult({ myId, myTeamId, teams, changeName }: Result) {
-  const myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정';
-  const myTeamIcon = teams.find(team => team.id === myTeamId)?.icon ?? '🐼';
+export default function RspResult({ myId, myTeamId, win, teams, changeName }: RspResultType) {
+  const resultFace = win === 'win' ? '😀' : win === 'draw' ? '😐' : '🥲';
   const [myName, setMyName] = useState(
     teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)?.name ??
       '멤버 0'
@@ -35,11 +24,16 @@ export default function AutoResult({ myId, myTeamId, teams, changeName }: Result
 
   return (
     <div className="flex flex-col items-center">
-      <ResultImage isPositive={true} icon={myTeamIcon}></ResultImage>
-      <div className="flex justify-center items-center my-6 gap-2">
+      <ResultImage isPositive={win === 'win' || win === 'draw'} icon={resultFace}></ResultImage>
+      <div className="flex justify-center items-center my-6 gap-1">
         <p>당신은</p>
-        <p className="font-extrabold text-[20px]">{myTeamName}팀</p>
-        <p>입니다!</p>
+        {win === 'win' ? (
+          <p>이겼습니다!</p>
+        ) : win === 'draw' ? (
+          <p>비겼습니다.</p>
+        ) : (
+          <p>졌습니다.</p>
+        )}
       </div>
       <div className="flex justify-center items-center gap-2">
         <p>그리고 당신의 이름은 </p>
@@ -66,7 +60,7 @@ export default function AutoResult({ myId, myTeamId, teams, changeName }: Result
           )}
         </button>
       </div>
-      <ResultList teams={teams}></ResultList>
+      <ResultList teams={teams} isTeam={false}></ResultList>
     </div>
   );
 }

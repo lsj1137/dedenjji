@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Draw() {
-  const [people, setPeople] = useState(0);
+  const [people, setPeople] = useState(4);
   const [win, setWin] = useState(0);
 
   return (
@@ -20,9 +20,9 @@ export default function Draw() {
         }}
       ></Header>
       <div className="my-20">
-        <Counter count={people} objectName="제비 수" onChange={setPeople}></Counter>
+        <Counter count={people} objectName="제비 수" minimum={1} onChange={setPeople}></Counter>
         <div className="h-6"></div>
-        <Counter count={win} objectName="당첨(또는 꽝) 수" onChange={setWin}></Counter>
+        <Counter count={win} objectName="당첨(또는 꽝) 수" minimum={0} onChange={setWin}></Counter>
       </div>
       <Link
         href={{

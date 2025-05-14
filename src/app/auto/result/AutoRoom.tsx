@@ -41,7 +41,7 @@ export default function AutoRoom() {
     newTeams.map(team => {
       const changedMate = team.members.find(member => member.id === id);
       if (changedMate) {
-        changedMate.nickname = newName;
+        changedMate.name = newName;
       }
     });
     resultRef.current!.teams = newTeams;
@@ -62,7 +62,7 @@ export default function AutoRoom() {
     }
     socket.emit('joinRoom', {
       roomId: inviteCode ?? tempCode,
-      nickname: `멤버 ${currentUser + 1}`,
+      name: `멤버 ${currentUser + 1}`,
     });
     return () => {
       socket.emit('leaveRoom');
@@ -74,7 +74,7 @@ export default function AutoRoom() {
   }, [splitResult]);
 
   return (
-    <div className="h-full">
+    <div className="flex flex-col h-full">
       <Header title="자동" goHome={false} canSet={true} onSet={() => {}}></Header>
       <Connects color="var(--color-menuRed)" currentUser={currentUser} totalUsers={Number(total)} />
       {showResult ? (
@@ -89,7 +89,8 @@ export default function AutoRoom() {
       ) : (
         <Share shareUrl={shareUrl}></Share>
       )}
-      <div className="absolute bottom-5 w-[400px]">
+      <div className="h-20 w-[400px]" />
+      <div className="fixed bottom-5 w-[400px]">
         {showResult ? (
           <Button
             content={'팀 다시 나누기'}
