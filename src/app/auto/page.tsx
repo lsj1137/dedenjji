@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Auto() {
-  const [people, setPeople] = useState(0);
-  const [team, setTeam] = useState(0);
+  const [people, setPeople] = useState(2);
+  const [team, setTeam] = useState(2);
 
   return (
     <div>
@@ -20,9 +20,9 @@ export default function Auto() {
         }}
       ></Header>
       <div className="my-20">
-        <Counter count={people} objectName="인원 수" onChange={setPeople}></Counter>
+        <Counter count={people} objectName="인원 수" minimum={2} onChange={setPeople}></Counter>
         <div className="h-6"></div>
-        <Counter count={team} objectName="팀 수" onChange={setTeam}></Counter>
+        <Counter count={team} objectName="팀 수" minimum={2} onChange={setTeam}></Counter>
       </div>
       <Link
         href={{

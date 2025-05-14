@@ -4,17 +4,18 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 type CounterProps = {
   objectName: string;
   count: number;
+  minimum?: number;
   onChange: (v: number) => void;
 };
 
-export default function Counter({ objectName, count, onChange }: CounterProps) {
+export default function Counter({ objectName, count, minimum = 0, onChange }: CounterProps) {
   return (
     <div className="flex w-full items-center font-semibold px-4">
       <div className="flex-1">{objectName}</div>
       <button
         className="w-8 h-8"
         onClick={() => {
-          if (count > 0) onChange(count - 1);
+          if (count > minimum) onChange(count - 1);
         }}
       >
         <FontAwesomeIcon icon={faMinus}></FontAwesomeIcon>
