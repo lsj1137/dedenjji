@@ -2,7 +2,7 @@
 
 import Connects from '@/components/Connects';
 import Header from '@/components/Header';
-// import Share from '@/components/Share';
+import Share from '@/components/Share';
 import { getRandomRoomId, getSocket } from '@/utils/socket';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -10,8 +10,10 @@ import AutoResult, { Result } from '../../auto/result/AutoResult';
 import Play from '@/components/Play';
 import RspOptions from './DdjOptions';
 import Button from '@/components/Button';
+import DdjResult, { DdjResultType } from './DdjResult';
+import { ddjResponse, toResult } from '@/utils/ddjResultConverter';
 
-export default function RspRoom() {
+export default function DdjRoom() {
   const searchParams = useSearchParams();
   const total = searchParams.get('total');
   const inviteCode = searchParams.get('inviteCode');
@@ -19,44 +21,65 @@ export default function RspRoom() {
   const [currentUser, setCurrentUser] = useState<number>(0);
   const [allJoined, setAllJoined] = useState<boolean>(false);
   const [showResult, setShowResult] = useState<boolean>(false);
-  const [splitResult, setResult] = useState<Result>();
+  const [ddjResult, setResult] = useState<DdjResultType>();
   const [countDown, setCountDown] = useState<number>(3);
-  const [selected, setSelected] = useState<string>('');
-  const resultRef = useRef(splitResult);
+  const [selected, setSelected] = useState<string>('abstention');
+  const resultRef = useRef(ddjResult);
   const timerInterval = useRef<NodeJS.Timeout>(null);
-
   const socket = getSocket();
 
-  socket.on('roomJoined', info => {
-    setCurrentUser(info.participants.length);
-  });
-
-  socket.on('roomExited', info => {
-    setCurrentUser(info.participants.length);
-  });
-
-  socket.on('receiveResult', result => {
-    setResult(result);
-    setShowResult(true);
-  });
-
-  socket.on('nameChanged', ({ id, newName }: { id: string; newName: string }) => {
-    const newTeams = [...resultRef.current!.teams];
-    newTeams.map(team => {
-      const changedMate = team.members.find(member => member.id === id);
-      if (changedMate) {
-        changedMate.name = newName;
-      }
-    });
-    resultRef.current!.teams = newTeams;
-    const newResult = {
-      ...resultRef.current!,
-      teams: newTeams,
-    };
+  function ddjResultHandler(result: ddjResponse) {
+    const newResult: DdjResultType = toResult(socket.id ?? '', result);
     setResult(newResult);
-  });
+    setShowResult(true);
+  }
+
+  function replayDdjHandler() {
+    setSelected('abstention');
+    setCountDown(3);
+    setShowResult(false);
+    timerInterval.current = setInterval(() => {
+      setCountDown(prev => {
+        if (prev > 0) {
+          return prev - 1;
+        } else return prev;
+      });
+    }, 1000);
+  }
 
   useEffect(() => {
+    socket.on('roomJoined', info => {
+      setCurrentUser(info.participants.length);
+    });
+
+    socket.on('roomExited', info => {
+      setCurrentUser(info.participants.length);
+    });
+
+    socket.on('receiveResult', result => {
+      setResult(result);
+      setShowResult(true);
+    });
+
+    socket.on('nameChanged', ({ id, newName }: { id: string; newName: string }) => {
+      const newTeams = [...resultRef.current!.teams];
+      newTeams.map(team => {
+        const changedMate = team.members.find(member => member.id === id);
+        if (changedMate) {
+          changedMate.name = newName;
+        }
+      });
+      resultRef.current!.teams = newTeams;
+      const newResult = {
+        ...resultRef.current!,
+        teams: newTeams,
+      };
+      setResult(newResult);
+    });
+
+    socket.on('ddjResult', ddjResultHandler);
+    socket.on('startReplay', replayDdjHandler);
+
     let tempCode = '';
     if (inviteCode) {
       setUrl(`${window.location.href}`);
@@ -70,12 +93,14 @@ export default function RspRoom() {
     });
     return () => {
       socket.emit('leaveRoom');
+      socket.off('ddjResult', ddjResultHandler);
+      socket.off('startReplay', replayDdjHandler);
     };
   }, []);
 
   useEffect(() => {
-    resultRef.current = splitResult;
-  }, [splitResult]);
+    resultRef.current = ddjResult;
+  }, [ddjResult]);
 
   useEffect(() => {
     if (currentUser === Number(total)) {
@@ -92,6 +117,7 @@ export default function RspRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
+      socket.emit('submitDdjChoice', selected);
       setShowResult(true);
       if (timerInterval.current) {
         clearInterval(timerInterval.current);
@@ -108,15 +134,17 @@ export default function RspRoom() {
         totalUsers={Number(total)}
       />
       {allJoined ? (
-        showResult ? (
-          <AutoResult
-            myId={splitResult?.myId ?? '0'}
-            myTeamId={splitResult?.myTeamId ?? 0}
-            teams={splitResult?.teams ?? []}
+        showResult && ddjResult ? (
+          <DdjResult
+            type={ddjResult?.type ?? 'fail'}
+            myId={ddjResult?.myId ?? '0'}
+            myTeamName={ddjResult?.myTeamName ?? '기권'}
+            myTeamId={ddjResult?.myTeamId ?? 0}
+            teams={ddjResult?.teams ?? []}
             changeName={(newName: string) => {
               socket?.emit('changeName', newName);
             }}
-          ></AutoResult>
+          ></DdjResult>
         ) : (
           <Play
             count={countDown}
@@ -124,21 +152,14 @@ export default function RspRoom() {
           ></Play>
         )
       ) : (
-        <>
-          <div className=" flex flex-col items-center justify-center h-[300px] font-bold text-center gap-5">
-            <p className="text-5xl ">⛏️</p>
-            <p className="text-xl ">개발중입니다..</p>
-            <p className="hidden">{shareUrl}</p>
-          </div>
-          {/* <Share shareUrl={shareUrl}></Share> */}
-        </>
+        <Share shareUrl={shareUrl}></Share>
       )}
       {showResult && (
         <Button
           content={'재경기'}
           color="var(--color-menuGreen)"
           onClick={() => {
-            setShowResult(false);
+            socket.emit('replay');
           }}
         ></Button>
       )}
