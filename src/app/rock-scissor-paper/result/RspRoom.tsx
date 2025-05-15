@@ -23,7 +23,6 @@ export default function RspRoom() {
   const [rspResult, setResult] = useState<RspResultType>();
   const [countDown, setCountDown] = useState<number>(3);
   const [selected, setSelected] = useState<string>('abstention');
-  const [round, setRound] = useState<number>(1);
   const resultRef = useRef(rspResult);
   const timerInterval = useRef<NodeJS.Timeout>(null);
 
@@ -35,9 +34,8 @@ export default function RspRoom() {
     setShowResult(true);
   }
 
-  function replayRspHandler(newRound: number) {
+  function replayRspHandler() {
     setSelected('abstention');
-    setRound(newRound);
     setCountDown(3);
     setShowResult(false);
     timerInterval.current = setInterval(() => {
@@ -72,7 +70,7 @@ export default function RspRoom() {
 
     socket.on('rspResult', rspResultHandler);
 
-    socket.on('startReplayRsp', replayRspHandler);
+    socket.on('startReplay', replayRspHandler);
 
     socket.on('nameChanged', ({ id, newName }: { id: string; newName: string }) => {
       const newTeams = [...resultRef.current!.teams];
@@ -161,7 +159,7 @@ export default function RspRoom() {
             content={'재경기'}
             color="var(--color-menuBlue)"
             onClick={() => {
-              socket.emit('replayRsp', round + 1);
+              socket.emit('replay');
             }}
           ></Button>
         )}
