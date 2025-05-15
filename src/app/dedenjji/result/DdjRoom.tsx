@@ -6,7 +6,6 @@ import Share from '@/components/Share';
 import { getRandomRoomId, getSocket } from '@/utils/socket';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import AutoResult, { Result } from '../../auto/result/AutoResult';
 import Play from '@/components/Play';
 import RspOptions from './DdjOptions';
 import Button from '@/components/Button';
