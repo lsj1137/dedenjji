@@ -7,7 +7,7 @@ type CardProps = {
 export default function Card({ color, borderColor, children }: CardProps) {
   return (
     <div
-      className="h-50 w-50 rounded-2xl text-white p-4 shadow-md group "
+      className="w-full aspect-square rounded-2xl text-white p-4 shadow-md group "
       style={{
         backgroundColor: color,
         borderColor: borderColor,
