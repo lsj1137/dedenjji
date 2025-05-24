@@ -12,9 +12,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="flex bg-bgGray w-dvw h-full font-pretendard justify-center items-center">
-        <div className=" flex flex-col w-[400px] h-full">{children}</div>
+    <html lang="en" className="h-full">
+      <body className="flex bg-bgGray w-dvw h-full font-pretendard justify-center items-center overflow-hidden">
+        <div className=" flex flex-col w-full max-w-[400px] h-full">{children}</div>
+        <div
+          id="toast"
+          className="absolute top-[50%] left-[50%] -translate-x-1/2 bg-white rounded-xl px-4 py-2 shadow-gray-950/20 shadow-xs opacity-0 transition-all duration-300 ease-in-out"
+        ></div>
       </body>
     </html>
   );
