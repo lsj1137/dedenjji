@@ -56,7 +56,7 @@ export default function AutoResult({ myId, myTeamId, teams, changeName }: Result
             if (canChangeName) {
               changeName!(myName);
             }
-            setCanChangeName(!canChangeName);
+            setCanChangeName(prev => !prev);
           }}
         >
           {canChangeName ? (

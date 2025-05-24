@@ -50,7 +50,7 @@ export default function RspResult({ myId, myTeamId, win, teams, changeName }: Rs
             if (canChangeName) {
               changeName!(myName);
             }
-            setCanChangeName(!canChangeName);
+            setCanChangeName(prev => !prev);
           }}
         >
           {canChangeName ? (

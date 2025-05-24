@@ -59,7 +59,7 @@ export default function DdjResult({
             if (canChangeName) {
               changeName!(myName);
             }
-            setCanChangeName(!canChangeName);
+            setCanChangeName(prev => !prev);
           }}
         >
           {canChangeName ? (
