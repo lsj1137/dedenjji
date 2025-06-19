@@ -1,3 +1,10 @@
+// Error
+
+interface ErrorProps {
+  error: Error;
+  reset: () => void;
+}
+
 // AutoResult
 
 export interface Result {
