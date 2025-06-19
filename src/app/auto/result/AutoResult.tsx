@@ -4,25 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
 import { useState } from 'react';
-
-export type Result = {
-  myId: string;
-  myTeamId: number;
-  teams: Team[];
-  changeName?: (newName: string) => void;
-};
-
-export type Team = {
-  id: number;
-  name: string;
-  icon: string;
-  members: TeamMate[];
-};
-
-export type TeamMate = {
-  id: string;
-  name: string;
-};
+import { Result } from '@/types/global';
 
 export default function AutoResult({ myId, myTeamId, teams, changeName }: Result) {
   const myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정';

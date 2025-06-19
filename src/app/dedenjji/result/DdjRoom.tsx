@@ -9,8 +9,9 @@ import { useEffect, useRef, useState } from 'react';
 import Play from '@/components/Play';
 import RspOptions from './DdjOptions';
 import Button from '@/components/Button';
-import DdjResult, { DdjResultType } from './DdjResult';
-import { ddjResponse, toResult } from '@/utils/ddjResultConverter';
+import DdjResult from './DdjResult';
+import { toResult } from '@/utils/ddjResultConverter';
+import { DdjResultType, ddjResponse } from '@/types/global';
 
 export default function DdjRoom() {
   const searchParams = useSearchParams();

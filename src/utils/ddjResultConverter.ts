@@ -1,12 +1,4 @@
-import { DdjResultType } from '@/app/dedenjji/result/DdjResult';
-
-export type ddjResponse = {
-  type: string;
-  choice: string;
-  upside?: [];
-  downside?: [];
-  abstention?: [];
-};
+import { DdjResultType, ddjResponse } from '@/types/global';
 
 export function toResult(id: string, result: ddjResponse): DdjResultType {
   const newResult: DdjResultType = {

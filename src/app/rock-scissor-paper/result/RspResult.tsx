@@ -6,14 +6,6 @@ import ResultList from '@/components/ResultList';
 import { useState } from 'react';
 import { Team } from '@/app/auto/result/AutoResult';
 
-export type RspResultType = {
-  myId: string;
-  myTeamId: number;
-  win: string;
-  teams: Team[];
-  changeName?: (newName: string) => void;
-};
-
 export default function RspResult({ myId, myTeamId, win, teams, changeName }: RspResultType) {
   const resultFace = win === 'win' ? '😀' : win === 'draw' ? '😐' : '🥲';
   const [myName, setMyName] = useState(

@@ -1,8 +1,4 @@
-type CardProps = {
-  color: string;
-  borderColor?: string;
-  children?: React.ReactNode;
-};
+import { CardProps } from '@/types/global';
 
 export default function Card({ color, borderColor, children }: CardProps) {
   return (

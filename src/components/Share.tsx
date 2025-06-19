@@ -3,11 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { useQRCode } from 'next-qrcode';
 
-type ShareProps = {
-  shareUrl: string;
-};
-
-export default function Share({ shareUrl }: ShareProps) {
+export default function Share({ shareUrl }: { shareUrl: string }) {
   const { Image } = useQRCode();
 
   return (
@@ -44,7 +40,7 @@ export default function Share({ shareUrl }: ShareProps) {
   );
 }
 
-async function shareLink({ shareUrl }: ShareProps) {
+async function shareLink({ shareUrl }: { shareUrl: string }) {
   try {
     await navigator.share({
       title: '우리들의 팀 나누기 방법 - 데덴찌',

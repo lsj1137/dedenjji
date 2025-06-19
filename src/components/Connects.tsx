@@ -1,8 +1,4 @@
-type ConnectsProps = {
-  currentUser: number;
-  totalUsers: number;
-  color: string;
-};
+import { ConnectsProps } from '@/types/global';
 
 export default function Connects({ currentUser, totalUsers, color }: ConnectsProps) {
   return (

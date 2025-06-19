@@ -1,15 +1,4 @@
-import { TeamMate } from '@/app/auto/result/AutoResult';
-import { RspResultType } from '@/app/rock-scissor-paper/result/RspResult';
-
-export type rspResponse = {
-  type: 'win' | 'lose' | 'draw';
-  choice: string;
-  winChoice?: string;
-  rock?: [];
-  scissors?: [];
-  paper?: [];
-  abstention?: [];
-};
+import { TeamMate, RspResultType, rspResponse } from '@/types/global';
 
 export function toResult(id: string, result: rspResponse): RspResultType {
   const newResult: RspResultType = {

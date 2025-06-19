@@ -6,15 +6,6 @@ import ResultList from '@/components/ResultList';
 import { useState } from 'react';
 import { Team } from '@/app/auto/result/AutoResult';
 
-export type DdjResultType = {
-  type: string;
-  myId: string;
-  myTeamName: string;
-  myTeamId: number;
-  teams: Team[];
-  changeName?: (newName: string) => void;
-};
-
 export default function DdjResult({
   type,
   myId,

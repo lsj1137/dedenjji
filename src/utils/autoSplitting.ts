@@ -1,9 +1,6 @@
-import { Result, Team } from '@/app/auto/result/AutoResult';
+import { Result, Team, participantsResponse, teamInfo } from '@/types/global';
 import { getSocket } from './socket';
-import { animalTeams, TeamType } from './teamTypes';
-
-type participantsResponse = { id: string; participants: { userId: string; name: string }[] };
-type teamInfo = { name: string; icon: string };
+import { animalTeams, TeamType } from '../types/teamTypes';
 
 export async function splitTeams(total: number, teamCount: number): Promise<Result> {
   const response: participantsResponse = await getRoomMembers();
@@ -59,7 +56,7 @@ function generateTeamInfo(teamCount: number, type: TeamType): teamInfo[] {
   let candidates: string[][] = [];
   switch (type) {
     case TeamType.Animals:
-      candidates = animalTeams();
+      candidates = animalTeams;
       break;
     case TeamType.Colors:
       break;

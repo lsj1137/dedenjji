@@ -1,12 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-
-type CounterProps = {
-  objectName: string;
-  count: number;
-  minimum?: number;
-  onChange: (v: number) => void;
-};
+import { CounterProps } from '@/types/global';
 
 export default function Counter({ objectName, count, minimum = 0, onChange }: CounterProps) {
   return (

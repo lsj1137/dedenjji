@@ -5,20 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import Button from '@/components/Button';
 
-type DrawListProps = {
-  total: number;
-  win: number;
-};
-
-type DrawItem = {
-  x: number;
-  y: number;
-  color: string;
-  num: number;
-  angle: number;
-  isWinner: boolean;
-};
-
 export default function DrawList({ total, win }: DrawListProps) {
   const [cards, setCards] = useState<DrawItem[]>([]);
   const [selected, setSelected] = useState<DrawItem>();
