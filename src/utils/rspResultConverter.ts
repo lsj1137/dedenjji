@@ -1,5 +1,3 @@
-import { TeamMate, RspResultType, rspResponse } from '@/types/global';
-
 export function toResult(id: string, result: rspResponse): RspResultType {
   const newResult: RspResultType = {
     myId: id,

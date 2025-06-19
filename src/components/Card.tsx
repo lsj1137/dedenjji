@@ -1,5 +1,3 @@
-import { CardProps } from '@/types/global';
-
 export default function Card({ color, borderColor, children }: CardProps) {
   return (
     <div

@@ -11,7 +11,6 @@ import RspOptions from './DdjOptions';
 import Button from '@/components/Button';
 import DdjResult from './DdjResult';
 import { toResult } from '@/utils/ddjResultConverter';
-import { DdjResultType, ddjResponse } from '@/types/global';
 
 export default function DdjRoom() {
   const searchParams = useSearchParams();

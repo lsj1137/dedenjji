@@ -1,5 +1,3 @@
-import { ConnectsProps } from '@/types/global';
-
 export default function Connects({ currentUser, totalUsers, color }: ConnectsProps) {
   return (
     <div

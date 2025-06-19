@@ -1,4 +1,3 @@
-import { Result, Team, participantsResponse, teamInfo } from '@/types/global';
 import { getSocket } from './socket';
 import { animalTeams, TeamType } from '../types/teamTypes';
 

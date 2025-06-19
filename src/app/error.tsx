@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { ErrorProps } from '@/types/global';
 
 export default function GlobalError({ error, reset }: ErrorProps) {
   useEffect(() => {

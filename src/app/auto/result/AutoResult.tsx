@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
 import { useState } from 'react';
-import { Result } from '@/types/global';
 
 export default function AutoResult({ myId, myTeamId, teams, changeName }: Result) {
   const myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정';

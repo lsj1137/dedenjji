@@ -7,28 +7,28 @@ interface ErrorProps {
 
 // AutoResult
 
-export interface Result {
+interface Result {
   myId: string;
   myTeamId: number;
   teams: Team[];
   changeName?: (newName: string) => void;
 }
 
-export interface Team {
+interface Team {
   id: number;
   name: string;
   icon: string;
   members: TeamMate[];
 }
 
-export interface TeamMate {
+interface TeamMate {
   id: string;
   name: string;
 }
 
 // DdjResult
 
-export type DdjResultType = {
+type DdjResultType = {
   type: string;
   myId: string;
   myTeamName: string;
@@ -55,7 +55,7 @@ type DrawItem = {
 
 // RspResult;
 
-export type RspResultType = {
+type RspResultType = {
   myId: string;
   myTeamId: number;
   win: string;
@@ -123,7 +123,7 @@ type teamInfo = { name: string; icon: string };
 
 // ddjResultConverter;
 
-export type ddjResponse = {
+type ddjResponse = {
   type: string;
   choice: string;
   upside?: [];
@@ -133,7 +133,7 @@ export type ddjResponse = {
 
 // rspResultConverter;
 
-export type rspResponse = {
+type rspResponse = {
   type: 'win' | 'lose' | 'draw';
   choice: string;
   winChoice?: string;

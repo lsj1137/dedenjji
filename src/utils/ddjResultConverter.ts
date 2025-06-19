@@ -1,5 +1,3 @@
-import { DdjResultType, ddjResponse } from '@/types/global';
-
 export function toResult(id: string, result: ddjResponse): DdjResultType {
   const newResult: DdjResultType = {
     type: result.type,
