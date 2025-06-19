@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
 import RspRoom from './RspRoom';
+import GlobalLoading from '@/app/loading';
 
 export default function Page() {
   return (
-    <Suspense fallback={<p>로딩 중...</p>}>
+    <Suspense fallback={GlobalLoading()}>
       <RspRoom />
     </Suspense>
   );
