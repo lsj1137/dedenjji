@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
 import { useState } from 'react';
-import { Team } from '@/app/auto/result/AutoResult';
 
 export default function DdjResult({
   type,
@@ -26,9 +25,9 @@ export default function DdjResult({
       <ResultImage isPositive={type === 'success'} icon={myTeamIcon}></ResultImage>
       <div className="flex justify-center items-center my-6 gap-1">
         {type === 'success' ? (
-          <div className=" flex gap-1 items-center">
+          <div className="flex gap-1 items-center">
             <p>당신은 </p>
-            <p className=" font-extrabold text-[20px]">{myTeamName} 팀</p>
+            <p className="font-extrabold text-[20px]">{myTeamName} 팀</p>
             <p>입니다!</p>
           </div>
         ) : (
@@ -38,7 +37,7 @@ export default function DdjResult({
       <div className="flex justify-center items-center gap-2">
         <p>그리고 당신의 이름은 </p>
         <input
-          className=" underline underline-offset-4 w-[55px] text-center"
+          className="underline underline-offset-4 w-[55px] text-center"
           maxLength={5}
           value={myName}
           onChange={e => setMyName(e.target.value)}

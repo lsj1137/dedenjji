@@ -25,7 +25,7 @@ export default function AutoResult({ myId, myTeamId, teams, changeName }: Result
       <div className="flex justify-center items-center gap-2">
         <p>그리고 당신의 이름은 </p>
         <input
-          className=" underline underline-offset-4 w-[55px] text-center"
+          className="underline underline-offset-4 w-[55px] text-center"
           maxLength={5}
           value={myName}
           onChange={e => setMyName(e.target.value)}

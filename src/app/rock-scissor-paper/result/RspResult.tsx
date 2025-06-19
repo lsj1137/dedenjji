@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
 import { useState } from 'react';
-import { Team } from '@/app/auto/result/AutoResult';
 
 export default function RspResult({ myId, myTeamId, win, teams, changeName }: RspResultType) {
   const resultFace = win === 'win' ? '😀' : win === 'draw' ? '😐' : '🥲';
@@ -30,7 +29,7 @@ export default function RspResult({ myId, myTeamId, win, teams, changeName }: Rs
       <div className="flex justify-center items-center gap-2">
         <p>그리고 당신의 이름은 </p>
         <input
-          className=" underline underline-offset-4 w-[55px] text-center"
+          className="underline underline-offset-4 w-[55px] text-center"
           maxLength={5}
           value={myName}
           onChange={e => setMyName(e.target.value)}

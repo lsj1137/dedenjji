@@ -19,7 +19,7 @@ export default function DrawResult() {
           console.log('hi');
         }}
       ></Header>
-      <div className=" flex flex-col gap-3 text-center font-semibold">
+      <div className="flex flex-col gap-3 text-center font-semibold">
         <p className="text-normal">
           원하는 종이를 고르고 결과를 확인 후<br />
           다음 사람에게 넘겨주세요.
