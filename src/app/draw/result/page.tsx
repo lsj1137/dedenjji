@@ -3,7 +3,7 @@ import DrawResult from './DrawResult';
 
 export default function Page() {
   return (
-    <Suspense fallback={<p>로딩 중...</p>}>
+    <Suspense>
       <DrawResult />
     </Suspense>
   );

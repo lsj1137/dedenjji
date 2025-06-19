@@ -1,3 +1,5 @@
+/// <reference types="react" />
+
 // Error
 
 interface ErrorProps {
@@ -28,112 +30,119 @@ interface TeamMate {
 
 // DdjResult
 
-type DdjResultType = {
+interface DdjResultType {
   type: string;
   myId: string;
   myTeamName: string;
   myTeamId: number;
   teams: Team[];
   changeName?: (newName: string) => void;
-};
+}
 
 // DrawList
 
-type DrawListProps = {
+interface DrawListProps {
   total: number;
   win: number;
-};
+}
 
-type DrawItem = {
+interface DrawItem {
   x: number;
   y: number;
   color: string;
   num: number;
   angle: number;
   isWinner: boolean;
-};
+}
 
 // RspResult;
 
-type RspResultType = {
+interface RspResultType {
   myId: string;
   myTeamId: number;
   win: string;
   teams: Team[];
   changeName?: (newName: string) => void;
-};
+}
 
 // Button;
 
-type ButtonProps = {
+interface ButtonProps {
   color?: string;
   textColor?: string;
   content?: string;
   children?: React.ReactNode;
   onClick: () => void;
-};
+}
 
 // Card;
 
-type CardProps = {
+interface CardProps {
   color: string;
   borderColor?: string;
   children?: React.ReactNode;
-};
+}
 
 // Connects;
 
-type ConnectsProps = {
+interface ConnectsProps {
   currentUser: number;
   totalUsers: number;
   color: string;
-};
+}
 
 // Counter;
 
-type CounterProps = {
+interface CounterProps {
   objectName: string;
   count: number;
   minimum?: number;
   onChange: (v: number) => void;
-};
+}
 
 // Hearder;
 
-type HeaderProps = {
+interface HeaderProps {
   goHome: boolean;
   canSet: boolean;
   onSet?: () => void;
   title: string;
-};
+}
 
 // Option;
 
-type OptionProps = {
+interface OptionProps {
   color: string;
   title?: string;
   content?: string;
   icon?: ReactElement;
-};
+}
 
 // autoSplitting;
 
-type participantsResponse = { id: string; participants: { userId: string; name: string }[] };
-type teamInfo = { name: string; icon: string };
+interface participantsResponse {
+  id: string;
+  participants: { userId: string; name: string }[];
+}
+
+interface teamInfo {
+  name: string;
+  icon: string;
+}
 
 // ddjResultConverter;
 
-type ddjResponse = {
+interface ddjResponse {
   type: string;
   choice: string;
   upside?: [];
   downside?: [];
   abstention?: [];
-};
+}
 
 // rspResultConverter;
 
-type rspResponse = {
+interface rspResponse {
   type: 'win' | 'lose' | 'draw';
   choice: string;
   winChoice?: string;
@@ -141,4 +150,4 @@ type rspResponse = {
   scissors?: [];
   paper?: [];
   abstention?: [];
-};
+}
