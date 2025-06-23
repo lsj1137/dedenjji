@@ -9,8 +9,8 @@ import { useEffect, useRef, useState } from 'react';
 import Play from '@/components/Play';
 import RspOptions from './RspOptions';
 import Button from '@/components/Button';
-import { rspResponse, toResult } from '@/utils/rspResultConverter';
-import RspResult, { RspResultType } from './RspResult';
+import { toResult } from '@/utils/rspResultConverter';
+import RspResult from './RspResult';
 
 export default function RspRoom() {
   const searchParams = useSearchParams();
@@ -90,8 +90,8 @@ export default function RspRoom() {
 
     return () => {
       socket.emit('leaveRoom');
-      socket.off('startReplayRsp', replayRspHandler);
       socket.off('rspResult', rspResultHandler);
+      socket.off('startReplay', replayRspHandler);
     };
   }, []);
 

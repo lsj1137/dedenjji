@@ -1,13 +1,3 @@
-import { DdjResultType } from '@/app/dedenjji/result/DdjResult';
-
-export type ddjResponse = {
-  type: string;
-  choice: string;
-  upside?: [];
-  downside?: [];
-  abstention?: [];
-};
-
 export function toResult(id: string, result: ddjResponse): DdjResultType {
   const newResult: DdjResultType = {
     type: result.type,

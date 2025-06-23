@@ -1,11 +1,3 @@
-type ButtonProps = {
-  color?: string;
-  textColor?: string;
-  content?: string;
-  children?: React.ReactNode;
-  onClick: () => void;
-};
-
 export default function Button({
   color,
   textColor = 'white',

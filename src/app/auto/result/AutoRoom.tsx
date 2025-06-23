@@ -7,8 +7,8 @@ import Share from '@/components/Share';
 import { getRandomRoomId, getSocket } from '@/utils/socket';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import AutoResult, { Result } from './AutoResult';
-import { splitTeams } from '@/utils/autoSplitting';
+import AutoResult from './AutoResult';
+import { splitTeams } from '@/utils/autoSplitTeams';
 
 export default function AutoRoom() {
   const searchParams = useSearchParams();

@@ -1,9 +1,14 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Schoolbell&display=swap');
 @import 'tailwindcss';
 
 :root {
   --background: #e6e6e6;
   --foreground: #171717;
+}
+
+@theme {
+  --font-schoolbell: 'Schoolbell', sans-serif;
 }
 
 @theme {

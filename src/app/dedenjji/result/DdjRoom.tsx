@@ -9,8 +9,8 @@ import { useEffect, useRef, useState } from 'react';
 import Play from '@/components/Play';
 import RspOptions from './DdjOptions';
 import Button from '@/components/Button';
-import DdjResult, { DdjResultType } from './DdjResult';
-import { ddjResponse, toResult } from '@/utils/ddjResultConverter';
+import DdjResult from './DdjResult';
+import { toResult } from '@/utils/ddjResultConverter';
 
 export default function DdjRoom() {
   const searchParams = useSearchParams();
@@ -157,6 +157,7 @@ export default function DdjRoom() {
         <Button
           content={'재경기'}
           color="var(--color-menuGreen)"
+          textColor="black"
           onClick={() => {
             socket.emit('replay');
           }}

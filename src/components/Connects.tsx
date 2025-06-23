@@ -1,9 +1,3 @@
-type ConnectsProps = {
-  currentUser: number;
-  totalUsers: number;
-  color: string;
-};
-
 export default function Connects({ currentUser, totalUsers, color }: ConnectsProps) {
   return (
     <div

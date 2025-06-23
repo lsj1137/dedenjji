@@ -5,25 +5,6 @@ import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
 import { useState } from 'react';
 
-export type Result = {
-  myId: string;
-  myTeamId: number;
-  teams: Team[];
-  changeName?: (newName: string) => void;
-};
-
-export type Team = {
-  id: number;
-  name: string;
-  icon: string;
-  members: TeamMate[];
-};
-
-export type TeamMate = {
-  id: string;
-  name: string;
-};
-
 export default function AutoResult({ myId, myTeamId, teams, changeName }: Result) {
   const myTeamName = teams.find(team => team.id === myTeamId)?.name ?? '미정';
   const myTeamIcon = teams.find(team => team.id === myTeamId)?.icon ?? '🐼';
@@ -44,7 +25,7 @@ export default function AutoResult({ myId, myTeamId, teams, changeName }: Result
       <div className="flex justify-center items-center gap-2">
         <p>그리고 당신의 이름은 </p>
         <input
-          className=" underline underline-offset-4 w-[55px] text-center"
+          className="underline underline-offset-4 w-[55px] text-center"
           maxLength={5}
           value={myName}
           onChange={e => setMyName(e.target.value)}
@@ -56,7 +37,7 @@ export default function AutoResult({ myId, myTeamId, teams, changeName }: Result
             if (canChangeName) {
               changeName!(myName);
             }
-            setCanChangeName(!canChangeName);
+            setCanChangeName(prev => !prev);
           }}
         >
           {canChangeName ? (

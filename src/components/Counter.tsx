@@ -1,13 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
-type CounterProps = {
-  objectName: string;
-  count: number;
-  minimum?: number;
-  onChange: (v: number) => void;
-};
-
 export default function Counter({ objectName, count, minimum = 0, onChange }: CounterProps) {
   return (
     <div className="flex w-full items-center font-semibold px-4">

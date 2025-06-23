@@ -4,13 +4,6 @@ import Card from './Card';
 import { ReactElement } from 'react';
 config.autoAddCss = false; // 자동으로 CSS를 추가하지 않도록 설정
 
-type OptionProps = {
-  color: string;
-  title?: string;
-  content?: string;
-  icon?: ReactElement;
-};
-
 export default function Option({ color, title, content, icon }: OptionProps) {
   return (
     <Card color={color}>

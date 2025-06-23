@@ -6,13 +6,6 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 
-type HeaderProps = {
-  goHome: boolean;
-  canSet: boolean;
-  onSet?: () => void;
-  title: string;
-};
-
 export default function Header({ goHome, canSet, onSet, title }: HeaderProps) {
   const router = useRouter();
   return (

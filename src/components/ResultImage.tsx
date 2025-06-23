@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function ResultImage({ isPositive, icon }: { isPositive: boolean; icon: string }) {
   return (
-    <div className=" relative flex w-full px-5 h-[164px] items-center justify-center">
+    <div className="relative flex w-full px-5 h-[164px] items-center justify-center">
       <Image
         src={isPositive ? positive : negative}
         alt="result image"
