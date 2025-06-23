@@ -90,8 +90,8 @@ export default function RspRoom() {
 
     return () => {
       socket.emit('leaveRoom');
-      socket.off('startReplayRsp', replayRspHandler);
       socket.off('rspResult', rspResultHandler);
+      socket.off('startReplay', replayRspHandler);
     };
   }, []);
 
