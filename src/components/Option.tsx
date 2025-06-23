@@ -1,7 +1,6 @@
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import Card from './Card';
-import { ReactElement } from 'react';
 config.autoAddCss = false; // 자동으로 CSS를 추가하지 않도록 설정
 
 export default function Option({ color, title, content, icon }: OptionProps) {
