@@ -27,7 +27,12 @@ export default function Dedenjji() {
           query: { total: people },
         }}
       >
-        <Button color="var(--color-menuGreen)" content="나누기" onClick={() => {}}></Button>
+        <Button
+          color="var(--color-menuGreen)"
+          textColor="black"
+          content="나누기"
+          onClick={() => {}}
+        ></Button>
       </Link>
     </div>
   );

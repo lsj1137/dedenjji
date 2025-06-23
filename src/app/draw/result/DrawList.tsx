@@ -10,6 +10,7 @@ export default function DrawList({ total, win }: DrawListProps) {
   const [cards, setCards] = useState<DrawItem[]>([]);
   const [selected, setSelected] = useState<DrawItem>();
   const [remainingWinner, setRemainingWinner] = useState<number>(win);
+  const timerRef = useRef<NodeJS.Timeout>(null);
 
   const width = 200;
   const height = useRef(400);
@@ -33,12 +34,16 @@ export default function DrawList({ total, win }: DrawListProps) {
             zIndex: card !== selected ? index : 100,
           }}
           onClick={() => {
+            if (timerRef.current) {
+              clearTimeout(timerRef.current);
+            }
+            setCards(prev => prev.filter(c => c.num !== selected?.num));
             card.x = 0.5;
             card.y = 0.5;
             card.angle = 0;
             setSelected(card);
             if (card.isWinner) setRemainingWinner(prev => prev - 1);
-            setTimeout(() => {
+            timerRef.current = setTimeout(() => {
               setCards(prev => prev.filter(c => c.num !== card.num));
             }, 3000);
           }}
@@ -59,7 +64,10 @@ export default function DrawList({ total, win }: DrawListProps) {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
           <button
             className="flex items-center gap-2"
-            onClick={() => setCards(mixCards(cards.length, remainingWinner, cards))}
+            onClick={() => {
+              setCards(prev => prev.filter(c => c.num !== selected?.num));
+              setCards(prev => mixCards(prev.length, remainingWinner, prev));
+            }}
           >
             <p className="font-semibold text-header"> 섞기 </p>
             <FontAwesomeIcon icon={faRefresh} className="text-header"></FontAwesomeIcon>
@@ -72,6 +80,10 @@ export default function DrawList({ total, win }: DrawListProps) {
             content="다시 처음부터 뽑기"
             textColor="black"
             onClick={() => {
+              if (timerRef.current) {
+                clearTimeout(timerRef.current);
+              }
+              setSelected(undefined);
               setRemainingWinner(win);
               const newCards = mixCards(total, win);
               setCards(newCards);

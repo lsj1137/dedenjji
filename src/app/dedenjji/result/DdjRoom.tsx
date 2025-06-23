@@ -157,6 +157,7 @@ export default function DdjRoom() {
         <Button
           content={'재경기'}
           color="var(--color-menuGreen)"
+          textColor="black"
           onClick={() => {
             socket.emit('replay');
           }}
