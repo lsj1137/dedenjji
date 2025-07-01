@@ -3,7 +3,11 @@ import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: '데덴찌',
-  description: '우리만의 팀 나누기 방식 / Korean-style team splitting',
+  description:
+    '우리만의 팀 나누기 방식(Korean-style team splitting methods) - 자동 팀나누기(Auto Split), 제비뽑기(Draw Lots), 가위바위보(Rock Paper Scissors), 데덴찌(Dedenjji)',
+  alternates: {
+    canonical: 'https://dedenjji.3jun.store',
+  },
   icons: {
     icon: '/favicon.ico',
   },
