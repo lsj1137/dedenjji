@@ -13,7 +13,7 @@ export default function DrawResult() {
     <div className="flex flex-col h-dvh">
       <Header
         title="제비뽑기"
-        goHome={false}
+        goHomeWhenPop={false}
         canSet={true}
         onSet={() => {
           console.log('hi');

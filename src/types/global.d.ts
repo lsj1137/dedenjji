@@ -103,10 +103,12 @@ interface CounterProps {
 // Hearder;
 
 interface HeaderProps {
-  goHome: boolean;
+  canPop?: boolean;
+  goHomeWhenPop: boolean;
   canSet: boolean;
   onSet?: () => void;
   title: string;
+  onPop?: () => void;
 }
 
 // Option;

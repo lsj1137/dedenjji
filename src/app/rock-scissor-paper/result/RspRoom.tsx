@@ -126,7 +126,7 @@ export default function RspRoom() {
 
   return (
     <div className="h-full">
-      <Header title="가위바위보" goHome={false} canSet={true} onSet={() => {}}></Header>
+      <Header title="가위바위보" goHomeWhenPop={false} canSet={true} onSet={() => {}}></Header>
       <Connects
         color="var(--color-menuBlue)"
         currentUser={currentUser}

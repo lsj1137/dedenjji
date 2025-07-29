@@ -13,7 +13,7 @@ export default function Draw() {
     <div>
       <Header
         title="제비뽑기"
-        goHome={false}
+        goHomeWhenPop={false}
         canSet={true}
         onSet={() => {
           console.log('hi');

@@ -126,7 +126,7 @@ export default function DdjRoom() {
 
   return (
     <div className="h-full">
-      <Header title="데덴찌" goHome={false} canSet={true} onSet={() => {}}></Header>
+      <Header title="데덴찌" goHomeWhenPop={false} canSet={true} onSet={() => {}}></Header>
       <Connects
         color="var(--color-textGreen)"
         currentUser={currentUser}

@@ -9,6 +9,8 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import AutoResult from './AutoResult';
 import { splitTeams } from '@/utils/autoSplitTeams';
+import { AutoTeams } from '@/types/teamTypes';
+import { useAutoTeamStore } from '@/store/useStore';
 
 export default function AutoRoom() {
   const searchParams = useSearchParams();
@@ -20,6 +22,7 @@ export default function AutoRoom() {
   const [showResult, setShowResult] = useState<boolean>(false);
   const [splitResult, setResult] = useState<Result>();
   const resultRef = useRef(splitResult);
+  const { teamType, setTeamType } = useAutoTeamStore();
 
   const socket = getSocket();
 
@@ -75,7 +78,7 @@ export default function AutoRoom() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title="자동" goHome={false} canSet={true} onSet={() => {}}></Header>
+      <Header title="자동" goHomeWhenPop={false} canSet={true} onSet={() => {}}></Header>
       <Connects color="var(--color-menuRed)" currentUser={currentUser} totalUsers={Number(total)} />
       {showResult ? (
         <AutoResult
@@ -104,7 +107,7 @@ export default function AutoRoom() {
             content="팀 확인하기"
             color="var(--color-menuRed)"
             onClick={async () => {
-              const teamSplitResult = await splitTeams(Number(total), Number(team));
+              const teamSplitResult = await splitTeams(Number(total), Number(team), teamType);
               socket.emit('sendResult', teamSplitResult);
               setResult(teamSplitResult);
               setShowResult(true);

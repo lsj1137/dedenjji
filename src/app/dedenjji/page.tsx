@@ -24,7 +24,7 @@ export default function Dedenjji() {
     <div>
       <Header
         title="데덴찌"
-        goHome={false}
+        goHomeWhenPop={false}
         canSet={true}
         onSet={() => {
           console.log('hi');

@@ -1,11 +1,23 @@
+export interface TeamData {
+  teamType: TeamType;
+  teamTypeName: string;
+  teamInfos: string[][];
+}
+
 export enum TeamType {
   'Animals',
   'Colors',
   'Numbers',
   'Countries',
+  'Plants',
+  'Up-Down',
+  'Blue-White',
+  'Day-Night',
+  'Police-Thief',
+  'Dragon-Tiger',
 }
 
-export const animalTeams = [
+export const animals = [
   ['🦝', '너구리'],
   ['🐮', '젖소'],
   ['🦁', '사자'],
@@ -34,4 +46,119 @@ export const animalTeams = [
   ['🦉', '부엉이'],
   ['🐓', '닭'],
   ['🦅', '독수리'],
+];
+
+const numbers = Array.from(new Array(99), (_, index) => [
+  (index + 1).toString(),
+  (index + 1).toString(),
+]);
+
+const countries = [
+  ['🇰🇷', '한국'],
+  ['🇧🇪', '벨기에'],
+  ['🇧🇩', '방글라데시'],
+  ['🇧🇷', '브라질'],
+  ['🇨🇭', '스위스'],
+  ['🇦🇪', '아랍에미리트'],
+  ['🇦🇷', '아르헨티나'],
+  ['🇦🇱', '알바니아'],
+  ['🇦🇹', '오스트리아'],
+  ['🇨🇳', '중국'],
+  ['🇨🇱', '칠레'],
+  ['🇨🇦', '캐나다'],
+  ['🇨🇮', '코트디부아르'],
+  ['🇨🇴', '콜롬비아'],
+  ['🇭🇷', '크로아티아'],
+  ['🇨🇺', '쿠바'],
+  ['🇨🇿', '체코'],
+  ['🇩🇰', '덴마크'],
+  ['🇩🇴', '도미니카공화국'],
+  ['🇪🇬', '이집트'],
+  ['🇫🇮', '핀란드'],
+  ['🇫🇷', '프랑스'],
+  ['🇩🇪', '독일'],
+  ['🇬🇭', '가나'],
+  ['🇬🇷', '그리스'],
+  ['🇮🇪', '인도'],
+  ['🇮🇹', '이탈리아'],
+  ['🇯🇵', '일본'],
+  ['🇲🇾', '말레이시아'],
+  ['🇳🇬', '나이지리아'],
+  ['🇵🇱', '폴란드'],
+  ['🇵🇹', '포르투갈'],
+  ['🇷🇺', '러시아'],
+  ['🇿🇦', '남아프리카'],
+  ['🇹🇭', '태국'],
+  ['🇹🇷', '튀르키에'],
+  ['🇺🇸', '미국'],
+  ['🇺🇾', '우루과이'],
+  ['🇻🇳', '베트남'],
+];
+
+const plants = [
+  ['🍎', '사과'],
+  ['🍐', '배'],
+  ['🍊', '귤'],
+  ['🍋', '레몬'],
+  ['🍌', '바나나'],
+  ['🍉', '수박'],
+  ['🍇', '포도'],
+  ['🍓', '딸기'],
+  ['🫐', '블루베리'],
+  ['🍈', '멜론'],
+  ['🍒', '체리'],
+  ['🍑', '복숭아'],
+  ['🥭', '망고'],
+  ['🍍', '파인애플'],
+  ['🥥', '코코넛'],
+  ['🥝', '키위'],
+  ['🍅', '토마토'],
+  ['🥑', '아보카도'],
+  ['🥦', '브로콜리'],
+  ['🌶️', '고추'],
+  ['🌽', '옥수수'],
+  ['🥕', '당근'],
+  ['🧄', '마늘'],
+  ['🥔', '감자'],
+  ['🧅', '양파'],
+];
+
+const colors = [
+  ['🔴', '빨강'],
+  ['🟠', '주황'],
+  ['🟡', '노랑'],
+  ['🟢', '초록'],
+  ['🔵', '파랑'],
+  ['🟣', '보라'],
+  ['⚫️', '검정'],
+  ['⚪️', '하양'],
+  ['🟤', '갈색'],
+];
+
+export const AutoTeams: TeamData[] = [
+  {
+    teamType: TeamType.Animals,
+    teamTypeName: '동물',
+    teamInfos: animals,
+  },
+  {
+    teamType: TeamType.Numbers,
+    teamTypeName: '숫자',
+    teamInfos: numbers,
+  },
+  {
+    teamType: TeamType.Countries,
+    teamTypeName: '나라',
+    teamInfos: countries,
+  },
+  {
+    teamType: TeamType.Plants,
+    teamTypeName: '식물',
+    teamInfos: plants,
+  },
+  {
+    teamType: TeamType.Colors,
+    teamTypeName: '색상',
+    teamInfos: colors,
+  },
 ];

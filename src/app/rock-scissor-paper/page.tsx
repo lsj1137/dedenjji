@@ -22,7 +22,7 @@ export default function RockScissorPaper() {
 
   return (
     <div>
-      <Header title="가위바위보" goHome={false} canSet={false}></Header>
+      <Header title="가위바위보" goHomeWhenPop={false} canSet={false}></Header>
       <div className="my-20">
         <Counter count={people} objectName="인원 수" minimum={2} onChange={setPeople}></Counter>
       </div>
