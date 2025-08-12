@@ -27,7 +27,16 @@ jobs:
         run: npm run build
 
       - name: Archive build
-        run: tar -czf build.tgz ./
+        run: |
+          rm -f build.tgz
+          mkdir -p release
+          # 예시: Node 서버
+          cp -a dist release/ || true
+          cp -a package*.json release/ || true
+          cp -a ecosystem.config.js release/ || true
+          # 예시: Next.js면 .next, public 등으로 교체
+          # cp -a .next public package*.json next.config.js release/ || true
+          tar -czf build.tgz -C release .
 
       # SSH key setup
       - name: Setup SSH key
