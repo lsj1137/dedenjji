@@ -50,7 +50,7 @@ jobs:
       - name: Upload to Server (DEV)
         if: github.ref_name == 'develop'
         run: |
-          scp build.tgz -P ${{ secrets.DEPLOY_PORT_DEV }} \
+          scp -P ${{ secrets.DEPLOY_PORT_DEV }} build.tgz \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
 
       - name: Remote deploy (DEV)
@@ -78,7 +78,7 @@ jobs:
       - name: Upload to Server (PROD)
         if: github.ref_name == 'main'
         run: |
-          scp build.tgz -P ${{ secrets.DEPLOY_PORT_PROD }} \
+          scp -P ${{ secrets.DEPLOY_PORT_DEV }} build.tgz \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
 
       - name: Remote deploy (PROD)
