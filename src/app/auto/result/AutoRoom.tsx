@@ -9,7 +9,6 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import AutoResult from './AutoResult';
 import { splitTeams } from '@/utils/autoSplitTeams';
-import { AutoTeams } from '@/types/teamTypes';
 import { useAutoTeamStore } from '@/store/useStore';
 
 export default function AutoRoom() {
@@ -22,7 +21,7 @@ export default function AutoRoom() {
   const [showResult, setShowResult] = useState<boolean>(false);
   const [splitResult, setResult] = useState<Result>();
   const resultRef = useRef(splitResult);
-  const { teamType, setTeamType } = useAutoTeamStore();
+  const { teamType } = useAutoTeamStore();
 
   const socket = getSocket();
 

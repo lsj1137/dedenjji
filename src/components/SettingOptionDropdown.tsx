@@ -1,5 +1,5 @@
 import { TeamData } from '@/types/teamTypes';
-import { Dispatch, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import Button from './Button';
 
 export default function SettingOptionDropdown({
@@ -11,9 +11,9 @@ export default function SettingOptionDropdown({
 }: {
   title: string;
   selected: TeamData;
-  setSelected: Dispatch<any>;
+  setSelected: (teamData: TeamData) => void;
   optionList: TeamData[];
-  setIsSetting: Dispatch<any>;
+  setIsSetting: Dispatch<SetStateAction<boolean>>;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   return (

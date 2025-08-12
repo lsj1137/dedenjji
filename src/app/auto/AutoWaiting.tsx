@@ -2,7 +2,7 @@ import Button from '@/components/Button';
 import Counter from '@/components/Counter';
 import Link from 'next/link';
 import showToast from '@/utils/toast';
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 export default function AutoWaiting({
   peopleMinimum,
@@ -15,9 +15,9 @@ export default function AutoWaiting({
   peopleMinimum: number;
   teamMinimum: number;
   people: number;
-  setPeople: Dispatch<any>;
+  setPeople: Dispatch<SetStateAction<number>>;
   team: number;
-  setTeam: Dispatch<any>;
+  setTeam: Dispatch<SetStateAction<number>>;
 }) {
   const handleClick = (e: React.MouseEvent) => {
     if (people < peopleMinimum || team < teamMinimum) {

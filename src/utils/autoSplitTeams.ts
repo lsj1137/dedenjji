@@ -1,5 +1,5 @@
 import { getSocket } from './socket';
-import { animals, TeamData, TeamType } from '../types/teamTypes';
+import { TeamData } from '../types/teamTypes';
 
 export async function splitTeams(
   total: number,
@@ -56,7 +56,7 @@ function getRoomMembers(): Promise<participantsResponse> {
 }
 
 function generateTeamInfo(teamCount: number, teamData: TeamData): teamInfo[] {
-  let candidates: string[][] = teamData.teamInfos;
+  const candidates: string[][] = teamData.teamInfos;
   const mixedTeams = candidates.sort(() => Math.random() - 0.5);
   const teamInfo = mixedTeams.slice(0, teamCount).map(team => {
     return { icon: team[0], name: team[1] };
