@@ -1,0 +1,94 @@
+name: CI/CD via SSH (dev & prod with different ports)
+
+on:
+  push:
+    branches: ['develop', 'main']
+  workflow_dispatch: {}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & Test
+        run: |
+          npm ci
+          npm test --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Archive build
+        run: tar -czf build.tgz ./
+
+      # SSH key setup
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      # ===== develop 브랜치 배포 =====
+      - name: Upload to Server (DEV)
+        if: github.ref_name == 'develop'
+        run: |
+          scp build.tgz -P ${{ secrets.DEPLOY_PORT_DEV }} \
+            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
+
+      - name: Remote deploy (DEV)
+        if: github.ref_name == 'develop'
+        run: |
+          ssh -p ${{ secrets.DEPLOY_PORT_DEV }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash -lc '
+            set -e
+            DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+            mkdir -p "$DEPLOY_PATH"
+            tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
+            rm -f /tmp/build.tgz
+
+            if command -v pm2 >/dev/null 2>&1; then
+              cd "$DEPLOY_PATH"
+              pm2 startOrReload ecosystem.config.js --update-env
+              pm2 save
+            elif command -v docker >/dev/null 2>&1; then
+              cd "$DEPLOY_PATH"
+              docker compose pull || true
+              docker compose up -d --remove-orphans
+            fi
+          '
+
+      # ===== main 브랜치 배포 =====
+      - name: Upload to Server (PROD)
+        if: github.ref_name == 'main'
+        run: |
+          scp build.tgz -P ${{ secrets.DEPLOY_PORT_PROD }} \
+            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
+
+      - name: Remote deploy (PROD)
+        if: github.ref_name == 'main'
+        run: |
+          ssh -p ${{ secrets.DEPLOY_PORT_PROD }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash -lc '
+            set -e
+            DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+            mkdir -p "$DEPLOY_PATH"
+            tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
+            rm -f /tmp/build.tgz
+
+            if command -v pm2 >/dev/null 2>&1; then
+              cd "$DEPLOY_PATH"
+              pm2 startOrReload ecosystem.config.js --update-env
+              pm2 save
+            elif command -v docker >/dev/null 2>&1; then
+              cd "$DEPLOY_PATH"
+              docker compose pull || true
+              docker compose up -d --remove-orphans
+            fi
+          '
