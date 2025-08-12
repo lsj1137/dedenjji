@@ -50,13 +50,13 @@ jobs:
       - name: Upload to Server (DEV)
         if: github.ref_name == 'develop'
         run: |
-          scp -P ${{ secrets.DEPLOY_PORT_DEV }} build.tgz \
+          scp build.tgz \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
 
       - name: Remote deploy (DEV)
         if: github.ref_name == 'develop'
         run: |
-          ssh -p ${{ secrets.DEPLOY_PORT_DEV }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash -lc '
+          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash -lc '
             set -e
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             mkdir -p "$DEPLOY_PATH"
@@ -65,7 +65,7 @@ jobs:
 
             if command -v pm2 >/dev/null 2>&1; then
               cd "$DEPLOY_PATH"
-              pm2 startOrReload ecosystem.config.js --update-env
+              PORT=8004 pm2 startOrReload ecosystem.config.js --update-env
               pm2 save
             elif command -v docker >/dev/null 2>&1; then
               cd "$DEPLOY_PATH"
@@ -78,13 +78,13 @@ jobs:
       - name: Upload to Server (PROD)
         if: github.ref_name == 'main'
         run: |
-          scp -P ${{ secrets.DEPLOY_PORT_DEV }} build.tgz \
+          scp build.tgz \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
 
       - name: Remote deploy (PROD)
         if: github.ref_name == 'main'
         run: |
-          ssh -p ${{ secrets.DEPLOY_PORT_PROD }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash -lc '
+          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash -lc '
             set -e
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             mkdir -p "$DEPLOY_PATH"
@@ -93,7 +93,7 @@ jobs:
 
             if command -v pm2 >/dev/null 2>&1; then
               cd "$DEPLOY_PATH"
-              pm2 startOrReload ecosystem.config.js --update-env
+              PORT=8002 pm2 startOrReload ecosystem.config.js --update-env
               pm2 save
             elif command -v docker >/dev/null 2>&1; then
               cd "$DEPLOY_PATH"
