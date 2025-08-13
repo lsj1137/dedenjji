@@ -5,7 +5,7 @@ import Connects from '@/components/Connects';
 import Header from '@/components/Header';
 import Share from '@/components/Share';
 import { getRandomRoomId, getSocket } from '@/utils/socket';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import AutoResult from './AutoResult';
 import { splitTeams } from '@/utils/autoSplitTeams';

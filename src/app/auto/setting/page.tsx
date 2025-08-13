@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import Header from '@/components/Header';
 import SettingOptionDropdown from '@/components/SettingOptionDropdown';
 import { AutoTeams } from '@/types/teamTypes';
