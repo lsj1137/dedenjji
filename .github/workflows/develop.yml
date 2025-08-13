@@ -40,10 +40,22 @@ jobs:
           # 정적 자산
           mkdir -p release/.next
           cp -a .next/static release/.next/static
+          # BUILD_ID (★ 없으면 server.js가 "no production build" 에러)
+          cp -a .next/BUILD_ID release/.next/BUILD_ID
+          # 서버 파일 폴더 - 환경에 따라 필요 없는 경우도 많지만 안전하게 병행 가능
+          if [ -d .next/server ]; then
+            mkdir -p release/.next
+            cp -a .next/server release/.next/server
+          fi
           # public 있으면 포함
           cp -a public release/public 2>/dev/null || true
-          # (선택) PM2 설정파일 있으면 포함
+          # PM2 설정파일 있으면 포함
           cp -a ecosystem.config.* release/ 2>/dev/null || true
+          # 산출물 유효성 점검
+          test -f release/server.js || { echo "::error::release/server.js missing"; exit 1; }
+          test -f release/.next/BUILD_ID || { echo "::error::.next/BUILD_ID missing"; exit 1; }
+          test -d release/.next/static || { echo "::warning::.next/static missing (정적자산 없는 프로젝트면 무시 가능)"; }
+          # 압축    
           tar -czf build.tgz -C release .
 
       # SSH key setup
