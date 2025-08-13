@@ -47,6 +47,16 @@ jobs:
             mkdir -p release/.next
             cp -a .next/server release/.next/server
           fi
+          # ★ 매니페스트(필요한 것들 복사)
+          for f in routes-manifest.json prerender-manifest.json app-paths-manifest.json
+          do
+            [ -f ".next/$f" ] && cp -a ".next/$f" "release/.next/$f" || true
+          done
+          # (선택) 기타 매니페스트도 있으면 복사
+          for f in build-manifest.json react-loadable-manifest.json font-manifest.json next-font-manifest.json server-reference-manifest.json
+          do
+            [ -f ".next/$f" ] && cp -a ".next/$f" "release/.next/$f" || true
+          done
           # public 있으면 포함
           cp -a public release/public 2>/dev/null || true
           # PM2 설정파일 있으면 포함
