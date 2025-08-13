@@ -67,38 +67,43 @@ jobs:
         run: |
           ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
           "APP_PORT=8004 APP_NAME='dedenjji-dev' DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' bash -s" << 'REMOTE'
-set -euo pipefail
-: "${DEPLOY_PATH:?DEPLOY_PATH required}"
+          set -euo pipefail
+          : "${DEPLOY_PATH:?DEPLOY_PATH required}"
 
-# 산출물 존재/크기 확인
-[ -f /tmp/build.tgz ] || { echo "ERROR: /tmp/build.tgz not found"; exit 1; }
-[ -s /tmp/build.tgz ] || { echo "ERROR: /tmp/build.tgz is empty"; exit 1; }
+          # 산출물 존재/크기 확인
+          if [ ! -f /tmp/build.tgz ]; then
+            echo "ERROR: /tmp/build.tgz not found"
+            exit 1
+          fi
+          if [ ! -s /tmp/build.tgz ]; then
+            echo "ERROR: /tmp/build.tgz is empty"
+            exit 1
+          fi
+
+          mkdir -p "$DEPLOY_PATH"
+          tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
+          rm -f /tmp/build.tgz
 
 
-mkdir -p "$DEPLOY_PATH"
-tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
-rm -f /tmp/build.tgz
+          cd "$DEPLOY_PATH"
 
-
-cd "$DEPLOY_PATH"
-
-# PM2 실행 (standalone의 server.js 사용)
-if command -v pm2 >/dev/null 2>&1; then
-  if [ -f server.js ]; then
-    PORT="$APP_PORT" pm2 start server.js --name "$APP_NAME" --update-env
-  elif [ -f ecosystem.config.js ] || [ -f ecosystem.config.cjs ] || [ -f ecosystem.config.json ]; then
-    PORT="$APP_PORT" pm2 startOrReload ecosystem.config.js --update-env 2>/dev/null || \
-    PORT="$APP_PORT" pm2 startOrReload ecosystem.config.cjs --update-env 2>/dev/null || \
-    PORT="$APP_PORT" pm2 startOrReload ecosystem.config.json --update-env
-  else
-    # 폴백: npm start (Next.js)
-    PORT="$APP_PORT" pm2 start npm --name "$APP_NAME" -- run start
-  fi
-  pm2 save
-else
-  echo "WARN: pm2 not found; files deployed only."
-fi
-REMOTE
+          # PM2 실행 (standalone의 server.js 사용)
+          if command -v pm2 >/dev/null 2>&1; then
+            if [ -f server.js ]; then
+              PORT="$APP_PORT" pm2 start server.js --name "$APP_NAME" --update-env
+            elif [ -f ecosystem.config.js ] || [ -f ecosystem.config.cjs ] || [ -f ecosystem.config.json ]; then
+              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.js --update-env 2>/dev/null || \
+              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.cjs --update-env 2>/dev/null || \
+              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.json --update-env
+            else
+              # 폴백: npm start (Next.js)
+              PORT="$APP_PORT" pm2 start npm --name "$APP_NAME" -- run start
+            fi
+            pm2 save
+          else
+            echo "WARN: pm2 not found; files deployed only."
+          fi
+          REMOTE
 
       # ===== main 브랜치 배포 =====
       - name: Upload to Server (PROD)
@@ -112,33 +117,40 @@ REMOTE
         run: |
           ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
           "APP_PORT=8002 APP_NAME='dedenjji-prod' DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' bash -s" << 'REMOTE'
-set -euo pipefail
-: "${DEPLOY_PATH:?DEPLOY_PATH required}"
+          set -euo pipefail
+          : "${DEPLOY_PATH:?DEPLOY_PATH required}"
 
-# 산출물 존재/크기 확인
-[ -f /tmp/build.tgz ] || { echo "ERROR: /tmp/build.tgz not found"; exit 1; }
-[ -s /tmp/build.tgz ] || { echo "ERROR: /tmp/build.tgz is empty"; exit 1; }
+          # 산출물 존재/크기 확인
+          if [ ! -f /tmp/build.tgz ]; then
+            echo "ERROR: /tmp/build.tgz not found"
+            exit 1
+          fi
+          if [ ! -s /tmp/build.tgz ]; then
+            echo "ERROR: /tmp/build.tgz is empty"
+            exit 1
+          fi
 
-mkdir -p "$DEPLOY_PATH"
-tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
-rm -f /tmp/build.tgz
 
-cd "$DEPLOY_PATH"
+          mkdir -p "$DEPLOY_PATH"
+          tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
+          rm -f /tmp/build.tgz
 
-# PM2 실행 (standalone의 server.js 사용)
-if command -v pm2 >/dev/null 2>&1; then
-  if [ -f server.js ]; then
-    PORT="$APP_PORT" pm2 start server.js --name "$APP_NAME" --update-env
-  elif [ -f ecosystem.config.js ] || [ -f ecosystem.config.cjs ] || [ -f ecosystem.config.json ]; then
-    PORT="$APP_PORT" pm2 startOrReload ecosystem.config.js --update-env 2>/dev/null || \
-    PORT="$APP_PORT" pm2 startOrReload ecosystem.config.cjs --update-env 2>/dev/null || \
-    PORT="$APP_PORT" pm2 startOrReload ecosystem.config.json --update-env
-  else
-    # 폴백: npm start (Next.js)
-    PORT="$APP_PORT" pm2 start npm --name "$APP_NAME" -- run start
-  fi
-  pm2 save
-else
-  echo "WARN: pm2 not found; files deployed only."
-fi
-REMOTE
+          cd "$DEPLOY_PATH"
+
+          # PM2 실행 (standalone의 server.js 사용)
+          if command -v pm2 >/dev/null 2>&1; then
+            if [ -f server.js ]; then
+              PORT="$APP_PORT" pm2 start server.js --name "$APP_NAME" --update-env
+            elif [ -f ecosystem.config.js ] || [ -f ecosystem.config.cjs ] || [ -f ecosystem.config.json ]; then
+              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.js --update-env 2>/dev/null || \
+              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.cjs --update-env 2>/dev/null || \
+              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.json --update-env
+            else
+              # 폴백: npm start (Next.js)
+              PORT="$APP_PORT" pm2 start npm --name "$APP_NAME" -- run start
+            fi
+            pm2 save
+          else
+            echo "WARN: pm2 not found; files deployed only."
+          fi
+          REMOTE
