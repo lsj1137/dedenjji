@@ -5,6 +5,10 @@ on:
     branches: ['develop', 'main']
   workflow_dispatch: {}
 
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -106,7 +110,6 @@ jobs:
           tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
           rm -f /tmp/build.tgz
 
-
           cd "$DEPLOY_PATH"
 
           # PM2 실행 (standalone의 server.js 사용)
@@ -143,7 +146,6 @@ jobs:
             echo "ERROR: /tmp/build.tgz is empty"
             exit 1
           fi
-
 
           mkdir -p "$DEPLOY_PATH"
           tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
