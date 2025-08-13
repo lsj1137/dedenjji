@@ -89,16 +89,8 @@ jobs:
 
           # PM2 실행 (standalone의 server.js 사용)
           if command -v pm2 >/dev/null 2>&1; then
-            if [ -f server.js ]; then
-              PORT="$APP_PORT" pm2 start server.js --name "$APP_NAME" --update-env
-            elif [ -f ecosystem.config.js ] || [ -f ecosystem.config.cjs ] || [ -f ecosystem.config.json ]; then
-              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.js --update-env 2>/dev/null || \
-              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.cjs --update-env 2>/dev/null || \
-              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.json --update-env
-            else
-              # 폴백: npm start (Next.js)
-              PORT="$APP_PORT" pm2 start npm --name "$APP_NAME" -- run start
-            fi
+            pm2 delete dedenjji-dev 2>/dev/null || true   # 이름은 당신 것에 맞게
+            PORT="$APP_PORT" pm2 start "$DEPLOY_PATH/server.js" --name "$APP_NAME" --update-env
             pm2 save
           else
             echo "WARN: pm2 not found; files deployed only."
@@ -139,16 +131,8 @@ jobs:
 
           # PM2 실행 (standalone의 server.js 사용)
           if command -v pm2 >/dev/null 2>&1; then
-            if [ -f server.js ]; then
-              PORT="$APP_PORT" pm2 start server.js --name "$APP_NAME" --update-env
-            elif [ -f ecosystem.config.js ] || [ -f ecosystem.config.cjs ] || [ -f ecosystem.config.json ]; then
-              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.js --update-env 2>/dev/null || \
-              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.cjs --update-env 2>/dev/null || \
-              PORT="$APP_PORT" pm2 startOrReload ecosystem.config.json --update-env
-            else
-              # 폴백: npm start (Next.js)
-              PORT="$APP_PORT" pm2 start npm --name "$APP_NAME" -- run start
-            fi
+            pm2 delete dedenjji-prod 2>/dev/null || true   # 이름은 당신 것에 맞게
+            PORT="$APP_PORT" pm2 start "$DEPLOY_PATH/server.js" --name "$APP_NAME" --update-env
             pm2 save
           else
             echo "WARN: pm2 not found; files deployed only."
