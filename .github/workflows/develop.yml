@@ -50,15 +50,28 @@ jobs:
       - name: Upload to Server (DEV)
         if: github.ref_name == 'develop'
         run: |
-          scp build.tgz \
-            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
+          # 잘못 만들어진 디렉터리/파일 정리
+          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "rm -rf /tmp/build.tgz"
+          scp build.tgz ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
 
       - name: Remote deploy (DEV)
         if: github.ref_name == 'develop'
         run: |
-          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash -lc '
-            set -e
-            DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "APP_PORT=8004 DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' bash -s" << 'REMOTE'
+            set -euo pipefail
+            : "${DEPLOY_PATH:?DEPLOY_PATH required}"
+
+            # 산출물 확인
+            if [ ! -f /tmp/build.tgz ]; then
+              echo "ERROR: /tmp/build.tgz not found"
+              exit 1
+            fi
+            if [ ! -s /tmp/build.tgz ]; then
+              echo "ERROR: /tmp/build.tgz is empty"
+              exit 1
+            fi
+
             mkdir -p "$DEPLOY_PATH"
             tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
             rm -f /tmp/build.tgz
@@ -71,8 +84,10 @@ jobs:
               cd "$DEPLOY_PATH"
               docker compose pull || true
               docker compose up -d --remove-orphans
+            else
+              echo "WARN: Neither pm2 nor docker found; files deployed only."
             fi
-          '
+            REMOTE
 
       # ===== main 브랜치 배포 =====
       - name: Upload to Server (PROD)
@@ -84,20 +99,34 @@ jobs:
       - name: Remote deploy (PROD)
         if: github.ref_name == 'main'
         run: |
-          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} bash -lc '
-            set -e
-            DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "APP_PORT=8002 DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' bash -s" << 'REMOTE'
+            set -euo pipefail
+            : "${DEPLOY_PATH:?DEPLOY_PATH required}"
+
+            # 산출물 확인
+            if [ ! -f /tmp/build.tgz ]; then
+              echo "ERROR: /tmp/build.tgz not found"
+              exit 1
+            fi
+            if [ ! -s /tmp/build.tgz ]; then
+              echo "ERROR: /tmp/build.tgz is empty"
+              exit 1
+            fi
+
             mkdir -p "$DEPLOY_PATH"
             tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
             rm -f /tmp/build.tgz
 
             if command -v pm2 >/dev/null 2>&1; then
               cd "$DEPLOY_PATH"
-              PORT=8002 pm2 startOrReload ecosystem.config.js --update-env
+              PORT=8004 pm2 startOrReload ecosystem.config.js --update-env
               pm2 save
             elif command -v docker >/dev/null 2>&1; then
               cd "$DEPLOY_PATH"
               docker compose pull || true
               docker compose up -d --remove-orphans
+            else
+              echo "WARN: Neither pm2 nor docker found; files deployed only."
             fi
-          '
+            REMOTE
