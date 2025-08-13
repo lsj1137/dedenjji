@@ -5,7 +5,7 @@ import Connects from '@/components/Connects';
 import Header from '@/components/Header';
 import Share from '@/components/Share';
 import { getRandomRoomId, getSocket } from '@/utils/socket';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import AutoResult from './AutoResult';
 import { splitTeams } from '@/utils/autoSplitTeams';
@@ -77,7 +77,7 @@ export default function AutoRoom() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title="자동" goHomeWhenPop={false} canSet={true} onSet={() => {}}></Header>
+      <Header title="자동" goHomeWhenPop={false} canSet={false}></Header>
       <Connects color="var(--color-menuRed)" currentUser={currentUser} totalUsers={Number(total)} />
       {showResult ? (
         <AutoResult
