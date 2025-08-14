@@ -48,8 +48,37 @@ export const animals = [
   ['🦅', '독수리'],
 ];
 
+function numberToIcon(number: number) {
+  let numArr = number.toString().split('');
+  let icon = '';
+  for (let i = 0; i < numArr.length; i++) {
+    if (numArr[i] === '0') {
+      icon += '0️⃣';
+    } else if (numArr[i] === '1') {
+      icon += '1️⃣';
+    } else if (numArr[i] === '2') {
+      icon += '2️⃣';
+    } else if (numArr[i] === '3') {
+      icon += '3️⃣';
+    } else if (numArr[i] === '4') {
+      icon += '4️⃣';
+    } else if (numArr[i] === '5') {
+      icon += '5️⃣';
+    } else if (numArr[i] === '6') {
+      icon += '6️⃣';
+    } else if (numArr[i] === '7') {
+      icon += '7️⃣';
+    } else if (numArr[i] === '8') {
+      icon += '8️⃣';
+    } else if (numArr[i] === '9') {
+      icon += '9️⃣';
+    }
+  }
+  return icon;
+}
+
 const numbers = Array.from(new Array(99), (_, index) => [
-  (index + 1).toString(),
+  numberToIcon(index + 1),
   (index + 1).toString(),
 ]);
 
