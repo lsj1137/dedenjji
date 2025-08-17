@@ -1,13 +1,13 @@
 'use client';
 import Header from '@/components/Header';
 import SettingOptionDropdown from '@/components/SettingOptionDropdown';
-import { AutoTeams } from '@/types/teamTypes';
-import { useAutoTeamStore } from '@/store/useStore';
+import { AutoTeams, DedenjjiTeams } from '@/types/teamTypes';
+import { useAutoTeamStore, useDedenjjiTeamStore } from '@/store/useStore';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 
 export default function Auto() {
-  const { teamType, setTeamType } = useAutoTeamStore();
+  const { teamType, setTeamType } = useDedenjjiTeamStore();
   const router = useRouter();
 
   return (
@@ -17,10 +17,11 @@ export default function Auto() {
         title="팀 종류"
         selected={teamType}
         setSelected={setTeamType}
-        optionList={AutoTeams}
+        optionList={DedenjjiTeams}
       ></SettingOptionDropdown>
       <Button
-        color="var(--color-menuRed)"
+        color="var(--color-menuGreen)"
+        textColor="black"
         content="완료"
         onClick={() => {
           router.back();

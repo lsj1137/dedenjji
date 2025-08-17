@@ -3,12 +3,9 @@ import Header from '@/components/Header';
 import SettingOptionDropdown from '@/components/SettingOptionDropdown';
 import { AutoTeams } from '@/types/teamTypes';
 import { useAutoTeamStore } from '@/store/useStore';
-import Button from '@/components/Button';
-import { useRouter } from 'next/navigation';
 
 export default function Auto() {
   const { teamType, setTeamType } = useAutoTeamStore();
-  const router = useRouter();
 
   return (
     <div>
@@ -19,13 +16,6 @@ export default function Auto() {
         setSelected={setTeamType}
         optionList={AutoTeams}
       ></SettingOptionDropdown>
-      <Button
-        color="var(--color-menuRed)"
-        content="완료"
-        onClick={() => {
-          router.back();
-        }}
-      ></Button>
     </div>
   );
 }

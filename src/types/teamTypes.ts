@@ -164,6 +164,31 @@ const colors = [
   ['🟤', '갈색'],
 ];
 
+const upDown = [
+  ['🔼', '위'],
+  ['🔽', '아래'],
+];
+
+const blueWhite = [
+  ['🔵', '청'],
+  ['⚪️', '백'],
+];
+
+const dayNight = [
+  ['🌞', '낮'],
+  ['🌙', '밤'],
+];
+
+const policeThief = [
+  ['👮', '경찰'],
+  ['👷', '도둑'],
+];
+
+const dragonTiger = [
+  ['🐉', '용'],
+  ['🐯', '호랑이'],
+];
+
 export const AutoTeams: TeamData[] = [
   {
     teamType: TeamType.Animals,
@@ -189,5 +214,33 @@ export const AutoTeams: TeamData[] = [
     teamType: TeamType.Colors,
     teamTypeName: '색상',
     teamInfos: colors,
+  },
+];
+
+export const DedenjjiTeams: TeamData[] = [
+  {
+    teamType: TeamType['Up-Down'],
+    teamTypeName: '상/하',
+    teamInfos: upDown,
+  },
+  {
+    teamType: TeamType['Blue-White'],
+    teamTypeName: '청/백',
+    teamInfos: blueWhite,
+  },
+  {
+    teamType: TeamType['Day-Night'],
+    teamTypeName: '낮/밤',
+    teamInfos: dayNight,
+  },
+  {
+    teamType: TeamType['Police-Thief'],
+    teamTypeName: '경찰/도둑',
+    teamInfos: policeThief,
+  },
+  {
+    teamType: TeamType['Dragon-Tiger'],
+    teamTypeName: '용/호랑이',
+    teamInfos: dragonTiger,
   },
 ];

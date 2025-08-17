@@ -3,12 +3,14 @@ import Button from '@/components/Button';
 import Counter from '@/components/Counter';
 import Header from '@/components/Header';
 import showToast from '@/utils/toast';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Dedenjji() {
   const peopleMinimum = 2;
   const [people, setPeople] = useState(2);
+  const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
     if (people < peopleMinimum) {
@@ -27,7 +29,7 @@ export default function Dedenjji() {
         goHomeWhenPop={false}
         canSet={true}
         onSet={() => {
-          console.log('hi');
+          router.push('/dedenjji/setting');
         }}
       ></Header>
       <div className="my-20">
