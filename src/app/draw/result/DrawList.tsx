@@ -5,12 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import Button from '@/components/Button';
 import { mixCards } from '@/utils/draw';
+import { useDrawSettingStore } from '@/store/useStore';
 
 export default function DrawList({ total, win }: DrawListProps) {
   const [cards, setCards] = useState<DrawItem[]>([]);
   const [selected, setSelected] = useState<DrawItem>();
   const [remainingWinner, setRemainingWinner] = useState<number>(win);
   const timerRef = useRef<NodeJS.Timeout>(null);
+  const { showIndex } = useDrawSettingStore();
 
   const width = 200;
   const height = useRef(400);
@@ -53,7 +55,9 @@ export default function DrawList({ total, win }: DrawListProps) {
           ) : (
             <Card color="white" borderColor={card.color}>
               <div className="text-black w-full h-full flex items-center justify-center text-header font-semibold z-50">
-                {selected?.isWinner ? '당첨!' : `${(selected?.num ?? 0) + 1}`}
+                {selected?.isWinner
+                  ? '당첨' + (showIndex ? win - remainingWinner : '!')
+                  : `${(selected?.num ?? 0) + 1}`}
               </div>
             </Card>
           )}

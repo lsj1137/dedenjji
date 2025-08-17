@@ -3,11 +3,13 @@ import Button from '@/components/Button';
 import Counter from '@/components/Counter';
 import Header from '@/components/Header';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Draw() {
   const [people, setPeople] = useState(4);
   const [win, setWin] = useState(0);
+  const router = useRouter();
 
   return (
     <div>
@@ -16,7 +18,7 @@ export default function Draw() {
         goHomeWhenPop={false}
         canSet={true}
         onSet={() => {
-          console.log('hi');
+          router.push('/draw/setting');
         }}
       ></Header>
       <div className="my-20">

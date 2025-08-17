@@ -21,3 +21,13 @@ export const useDedenjjiTeamStore = create<DedenjjiTeamTypeState>(set => ({
   teamType: DedenjjiTeams[0],
   setTeamType: teamData => set({ teamType: teamData }),
 }));
+
+interface drawSettingStore {
+  showIndex: boolean;
+  setShowIndex: (showIndex: boolean) => void;
+}
+
+export const useDrawSettingStore = create<drawSettingStore>(set => ({
+  showIndex: false,
+  setShowIndex: showValue => set({ showIndex: showValue }),
+}));

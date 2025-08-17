@@ -1,7 +1,5 @@
 import { TeamData } from '@/types/teamTypes';
 import { useState } from 'react';
-import Button from './Button';
-import { useRouter } from 'next/navigation';
 
 export default function SettingOptionDropdown({
   title,
