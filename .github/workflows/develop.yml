@@ -36,14 +36,14 @@ jobs:
           test -f .next/standalone/server.js || (echo "::error::'.next/standalone/server.js' not found. Add { output: 'standalone' } to next.config.js" && exit 1)
 
       # 디버깅을 위한 단계 추가
-      - name: Verify Build Artifacts
-        run: |
-          echo "--- Checking contents of .next directory ---"
-          ls -lR .next
-          if [ ! -f .next/routes-manifest.json ]; then
-            echo "::error::routes-manifest.json was not created after build!"
-            exit 1
-          fi
+      # - name: Verify Build Artifacts
+      #   run: |
+      #     echo "--- Checking contents of .next directory ---"
+      #     ls -lR .next
+      #     if [ ! -f .next/routes-manifest.json ]; then
+      #       echo "::error::routes-manifest.json was not created after build!"
+      #       exit 1
+      #     fi
 
       - name: Archive build
         run: |
@@ -51,11 +51,9 @@ jobs:
           mkdir -p release
           # 실행 런타임(의존성 포함)
           cp -a .next/standalone/* release/
-          # 정적 자산
-          mkdir -p release/.next
-          cp -a .next/static release/.next/static
-          # BUILD_ID (★ 없으면 server.js가 "no production build" 에러)
-          cp -a .next/BUILD_ID release/.next/BUILD_ID
+          # .next 폴더 전체를 release 폴더 안으로 복사
+          # static, BUILD_ID, routes-manifest.json 등이 모두 포함됨
+          cp -a .next release/
           # 서버 파일 폴더 - 환경에 따라 필요 없는 경우도 많지만 안전하게 병행 가능
           if [ -d .next/server ]; then
             mkdir -p release/.next
