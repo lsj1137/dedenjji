@@ -4,11 +4,13 @@ import Counter from '@/components/Counter';
 import Header from '@/components/Header';
 import showToast from '@/utils/toast';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function RockScissorPaper() {
   const peopleMinimum = 2;
   const [people, setPeople] = useState(2);
+  const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
     if (people < peopleMinimum) {
@@ -22,7 +24,14 @@ export default function RockScissorPaper() {
 
   return (
     <div>
-      <Header title="가위바위보" goHomeWhenPop={false} canSet={false}></Header>
+      <Header
+        title="가위바위보"
+        goHomeWhenPop={false}
+        canSet={true}
+        onSet={() => {
+          router.push('/rock-scissor-paper/setting');
+        }}
+      ></Header>
       <div className="my-20">
         <Counter count={people} objectName="인원 수" minimum={2} onChange={setPeople}></Counter>
       </div>

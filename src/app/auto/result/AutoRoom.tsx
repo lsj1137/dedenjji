@@ -9,7 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import AutoResult from './AutoResult';
 import { splitTeams } from '@/utils/autoSplitTeams';
-import { useAutoTeamStore } from '@/store/useStore';
+import { useAutoTeamStore } from '@/store/useSettingsStore';
 
 export default function AutoRoom() {
   const searchParams = useSearchParams();

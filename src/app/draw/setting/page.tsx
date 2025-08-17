@@ -1,6 +1,6 @@
 'use client';
 import Header from '@/components/Header';
-import { useDrawSettingStore } from '@/store/useStore';
+import { useDrawSettingStore } from '@/store/useSettingsStore';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import SettingOptionToggleButton from '@/components/SettingOptionToggleButton';

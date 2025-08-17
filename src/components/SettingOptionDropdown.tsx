@@ -29,7 +29,7 @@ export default function SettingOptionDropdown({
           </div>
 
           {isOpen && (
-            <div className="absolute top-full left-0 right-0 bg-white rounded-b-[4px] shadow overflow-hidden max-h-[300]">
+            <div className="absolute top-full left-0 right-0 bg-white rounded-b-[4px] shadow overflow-hidden max-h-[300] z-10">
               {optionList.map(option => (
                 <span
                   key={option.teamType}

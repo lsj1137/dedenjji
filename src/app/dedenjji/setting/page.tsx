@@ -2,7 +2,7 @@
 import Header from '@/components/Header';
 import SettingOptionDropdown from '@/components/SettingOptionDropdown';
 import { DedenjjiTeams } from '@/types/teamTypes';
-import { useDedenjjiTeamStore } from '@/store/useStore';
+import { useDedenjjiTeamStore } from '@/store/useSettingsStore';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import SettingOptionToggleButton from '@/components/SettingOptionToggleButton';

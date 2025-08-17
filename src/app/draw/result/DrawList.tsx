@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import Button from '@/components/Button';
 import { mixCards } from '@/utils/draw';
-import { useDrawSettingStore } from '@/store/useStore';
+import { useDrawSettingStore } from '@/store/useSettingsStore';
 
 export default function DrawList({ total, win }: DrawListProps) {
   const [cards, setCards] = useState<DrawItem[]>([]);

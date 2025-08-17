@@ -35,3 +35,13 @@ export const useDrawSettingStore = create<drawSettingStore>(set => ({
   showIndex: false,
   setShowIndex: showValue => set({ showIndex: showValue }),
 }));
+
+interface rspSettingStore {
+  autoSubmit: boolean;
+  setAutoSubmit: (autoSubmit: boolean) => void;
+}
+
+export const useRspSettingStore = create<rspSettingStore>(set => ({
+  autoSubmit: false,
+  setAutoSubmit: autoSubmit => set({ autoSubmit: autoSubmit }),
+}));
