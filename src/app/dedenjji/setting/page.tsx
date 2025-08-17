@@ -1,8 +1,8 @@
 'use client';
 import Header from '@/components/Header';
 import SettingOptionDropdown from '@/components/SettingOptionDropdown';
-import { AutoTeams, DedenjjiTeams } from '@/types/teamTypes';
-import { useAutoTeamStore, useDedenjjiTeamStore } from '@/store/useStore';
+import { DedenjjiTeams } from '@/types/teamTypes';
+import { useDedenjjiTeamStore } from '@/store/useStore';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 

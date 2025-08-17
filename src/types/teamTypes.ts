@@ -49,7 +49,7 @@ export const animals = [
 ];
 
 function numberToIcon(number: number) {
-  let numArr = number.toString().split('');
+  const numArr = number.toString().split('');
   let icon = '';
   for (let i = 0; i < numArr.length; i++) {
     if (numArr[i] === '0') {
