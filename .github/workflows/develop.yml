@@ -35,6 +35,16 @@ jobs:
         run: |
           test -f .next/standalone/server.js || (echo "::error::'.next/standalone/server.js' not found. Add { output: 'standalone' } to next.config.js" && exit 1)
 
+      # 디버깅을 위한 단계 추가
+      - name: Verify Build Artifacts
+        run: |
+          echo "--- Checking contents of .next directory ---"
+          ls -lR .next
+          if [ ! -f .next/routes-manifest.json ]; then
+            echo "::error::routes-manifest.json was not created after build!"
+            exit 1
+          fi
+
       - name: Archive build
         run: |
           rm -f build.tgz
@@ -115,7 +125,7 @@ jobs:
           # PM2 실행 (standalone의 server.js 사용)
           if command -v pm2 >/dev/null 2>&1; then
             pm2 delete dedenjji-dev 2>/dev/null || true   # 이름은 당신 것에 맞게
-            PORT="$APP_PORT" pm2 start "$DEPLOY_PATH/server.js" --name "$APP_NAME" --update-env
+            PORT="$APP_PORT" pm2 start "$DEPLOY_PATH/server.js" --name "$APP_NAME"
             pm2 save
           else
             echo "WARN: pm2 not found; files deployed only."
@@ -156,7 +166,7 @@ jobs:
           # PM2 실행 (standalone의 server.js 사용)
           if command -v pm2 >/dev/null 2>&1; then
             pm2 delete dedenjji-prod 2>/dev/null || true   # 이름은 당신 것에 맞게
-            PORT="$APP_PORT" pm2 start "$DEPLOY_PATH/server.js" --name "$APP_NAME" --update-env
+            PORT="$APP_PORT" pm2 start "$DEPLOY_PATH/server.js" --name "$APP_NAME"
             pm2 save
           else
             echo "WARN: pm2 not found; files deployed only."
