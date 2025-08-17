@@ -11,13 +11,15 @@ export default function Auto() {
 
   return (
     <div>
-      <Header title="자동" goHomeWhenPop={false} canSet={false}></Header>
-      <SettingOptionToggleButton
-        title="당첨 제비 숫자 표시"
-        isActive={showIndex}
-        setIsActive={setShowIndex}
-        activeColor="var(--color-menuYellow)"
-      ></SettingOptionToggleButton>
+      <Header title="설정" goHomeWhenPop={false} canSet={false}></Header>
+      <div className="flex flex-col gap-10 my-20">
+        <SettingOptionToggleButton
+          title="당첨 제비 숫자 표시"
+          isActive={showIndex}
+          setIsActive={setShowIndex}
+          activeColor="var(--color-menuYellow)"
+        ></SettingOptionToggleButton>
+      </div>
       <Button
         color="var(--color-menuYellow)"
         textColor="black"

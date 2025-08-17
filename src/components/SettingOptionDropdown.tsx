@@ -14,7 +14,7 @@ export default function SettingOptionDropdown({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="my-20 flex justify-between items-center mx-4 font-semibold">
+    <div className="flex justify-between items-center mx-4 font-semibold">
       <p>{title}</p>
       <div className="relative inline-block">
         <div className="relative cursor-pointer">

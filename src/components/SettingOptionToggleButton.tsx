@@ -10,7 +10,7 @@ export default function SettingOptionToggleButton({
   activeColor: string;
 }) {
   return (
-    <div className="my-20 flex justify-between items-center mx-4 font-semibold">
+    <div className="flex justify-between items-center mx-4 font-semibold">
       <p>{title}</p>
       <div
         className={`w-[84px] h-[42px] relative rounded-full`}

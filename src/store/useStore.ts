@@ -12,14 +12,18 @@ export const useAutoTeamStore = create<AutoTeamTypeState>(set => ({
   setTeamType: teamData => set({ teamType: teamData }),
 }));
 
-interface DedenjjiTeamTypeState {
+interface DedenjjiSettingStore {
   teamType: TeamData;
+  autoSubmit: boolean;
   setTeamType: (teamData: TeamData) => void;
+  setAutoSubmit: (autoSubmit: boolean) => void;
 }
 
-export const useDedenjjiTeamStore = create<DedenjjiTeamTypeState>(set => ({
+export const useDedenjjiTeamStore = create<DedenjjiSettingStore>(set => ({
   teamType: DedenjjiTeams[0],
+  autoSubmit: false,
   setTeamType: teamData => set({ teamType: teamData }),
+  setAutoSubmit: autoSubmit => set({ autoSubmit: autoSubmit }),
 }));
 
 interface drawSettingStore {

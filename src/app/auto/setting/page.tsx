@@ -12,13 +12,15 @@ export default function Auto() {
 
   return (
     <div>
-      <Header title="자동" goHomeWhenPop={false} canSet={false}></Header>
-      <SettingOptionDropdown
-        title="팀 종류"
-        selected={teamType}
-        setSelected={setTeamType}
-        optionList={AutoTeams}
-      ></SettingOptionDropdown>
+      <Header title="설정" goHomeWhenPop={false} canSet={false}></Header>
+      <div className="flex flex-col gap-10 my-20">
+        <SettingOptionDropdown
+          title="팀 종류"
+          selected={teamType}
+          setSelected={setTeamType}
+          optionList={AutoTeams}
+        ></SettingOptionDropdown>
+      </div>
       <Button
         color="var(--color-menuRed)"
         content="완료"
