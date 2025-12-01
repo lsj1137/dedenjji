@@ -13,7 +13,7 @@ export default function DdjResult({
   teams,
   changeName,
 }: DdjResultType) {
-  const myTeamIcon = type === 'fail' ? '🥲' : myTeamName === '위' ? '👆' : '👇';
+  const myTeamIcon = type === 'fail' ? '😥' : myTeamName === '위' ? '👆' : '👇';
   const [myName, setMyName] = useState(
     teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)?.name ??
       '멤버 0'

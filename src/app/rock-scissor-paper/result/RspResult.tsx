@@ -6,7 +6,7 @@ import ResultList from '@/components/ResultList';
 import { useState } from 'react';
 
 export default function RspResult({ myId, myTeamId, win, teams, changeName }: RspResultType) {
-  const resultFace = win === 'win' ? '😀' : win === 'draw' ? '😐' : '🥲';
+  const resultFace = win === 'win' ? '😀' : win === 'draw' ? '😐' : '😥';
   const [myName, setMyName] = useState(
     teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)?.name ??
       '멤버 0'
