@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -13,6 +13,15 @@ export const metadata: Metadata = {
   },
 };
 
+// 모바일 키보드나 주소창에 대응하기 위한 뷰포트 설정
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  // interactiveWidget: 'resizes-content', // 필요시 키보드 올라올 때 화면 조정 옵션
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,8 +29,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className="flex bg-bgGray w-dvw h-full font-pretendard justify-center items-center overflow-hidden">
-        <div className="flex flex-col w-full max-w-[400px] h-full">{children}</div>
+      <body className="flex bg-bgGray w-dvw h-dvh font-pretendard justify-center items-center overflow-hidden touch-none ">
+        <div className="flex flex-col w-full max-w-[400px] h-full overflow-y-auto no-scrollbar relative">{children}</div>
         <div
           id="toast"
           className="absolute top-[50%] left-[50%] -translate-x-1/2 bg-white rounded-xl px-4 py-2 shadow-gray-950/20 shadow-xs opacity-0 transition-all duration-300 ease-in-out"

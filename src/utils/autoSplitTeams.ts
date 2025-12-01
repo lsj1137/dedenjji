@@ -1,7 +1,11 @@
 import { getSocket } from './socket';
-import { animalTeams, TeamType } from '../types/teamTypes';
+import { TeamData } from '../types/teamTypes';
 
-export async function splitTeams(total: number, teamCount: number): Promise<Result> {
+export async function splitTeams(
+  total: number,
+  teamCount: number,
+  teamData: TeamData
+): Promise<Result> {
   const response: participantsResponse = await getRoomMembers();
   const myRoom = response.participants;
   const myId = response.id;
@@ -15,7 +19,7 @@ export async function splitTeams(total: number, teamCount: number): Promise<Resu
   });
   allMembers.sort(() => Math.random() - 0.5);
   const teams: Team[] = new Array(teamCount);
-  const teamInfos: teamInfo[] = generateTeamInfo(teamCount, TeamType.Animals);
+  const teamInfos: teamInfo[] = generateTeamInfo(teamCount, teamData);
   const peoplePerTeam = total / teamCount;
   for (let i = 0; i < teamCount; i++) {
     const teamMembers = allMembers.slice(i * peoplePerTeam, (i + 1) * peoplePerTeam);
@@ -51,21 +55,8 @@ function getRoomMembers(): Promise<participantsResponse> {
   });
 }
 
-function generateTeamInfo(teamCount: number, type: TeamType): teamInfo[] {
-  let candidates: string[][] = [];
-  switch (type) {
-    case TeamType.Animals:
-      candidates = animalTeams;
-      break;
-    case TeamType.Colors:
-      break;
-    case TeamType.Numbers:
-      break;
-    case TeamType.Countries:
-      break;
-    default:
-      throw new Error('Invalid team type');
-  }
+function generateTeamInfo(teamCount: number, teamData: TeamData): teamInfo[] {
+  const candidates: string[][] = teamData.teamInfos;
   const mixedTeams = candidates.sort(() => Math.random() - 0.5);
   const teamInfo = mixedTeams.slice(0, teamCount).map(team => {
     return { icon: team[0], name: team[1] };

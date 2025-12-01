@@ -11,6 +11,8 @@ import RspOptions from './DdjOptions';
 import Button from '@/components/Button';
 import DdjResult from './DdjResult';
 import { toResult } from '@/utils/ddjResultConverter';
+import { useDdjSettingStore } from '@/store/useSettingsStore';
+import { getRandomDdj } from '@/utils/autoSelect';
 
 export default function DdjRoom() {
   const searchParams = useSearchParams();
@@ -20,15 +22,18 @@ export default function DdjRoom() {
   const [currentUser, setCurrentUser] = useState<number>(0);
   const [allJoined, setAllJoined] = useState<boolean>(false);
   const [showResult, setShowResult] = useState<boolean>(false);
+  const [goHome, setGoHome] = useState<boolean>(false);
   const [ddjResult, setResult] = useState<DdjResultType>();
   const [countDown, setCountDown] = useState<number>(3);
   const [selected, setSelected] = useState<string>('abstention');
   const resultRef = useRef(ddjResult);
   const timerInterval = useRef<NodeJS.Timeout>(null);
   const socket = getSocket();
+  const { autoSubmit, teamType } = useDdjSettingStore();
 
   function ddjResultHandler(result: ddjResponse) {
     const newResult: DdjResultType = toResult(socket.id ?? '', result);
+    console.log(newResult);
     setResult(newResult);
     setShowResult(true);
   }
@@ -82,9 +87,11 @@ export default function DdjRoom() {
     let tempCode = '';
     if (inviteCode) {
       setUrl(`${window.location.href}`);
+      setGoHome(true);
     } else {
       tempCode = getRandomRoomId();
       setUrl(`${window.location.href}&inviteCode=${tempCode}`);
+      setGoHome(false);
     }
     socket.emit('joinRoom', {
       roomId: inviteCode ?? tempCode,
@@ -116,7 +123,14 @@ export default function DdjRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
-      socket.emit('submitDdjChoice', selected);
+      const data = {'choice':'abstention', 'teamType': teamType.teamType.toString()};
+      if (selected==='abstention' && autoSubmit) {
+        data['choice'] = getRandomDdj();
+      } else {
+        data['choice'] = selected;
+      }
+      console.log(data)
+      socket.emit('submitDdjChoice', data);
       setShowResult(true);
       if (timerInterval.current) {
         clearInterval(timerInterval.current);
@@ -126,7 +140,7 @@ export default function DdjRoom() {
 
   return (
     <div className="h-full">
-      <Header title="데덴찌" goHome={false} canSet={true} onSet={() => {}}></Header>
+      <Header title="데덴찌" goHomeWhenPop={goHome} canSet={false}></Header>
       <Connects
         color="var(--color-textGreen)"
         currentUser={currentUser}
@@ -136,6 +150,7 @@ export default function DdjRoom() {
         showResult && ddjResult ? (
           <DdjResult
             type={ddjResult?.type ?? 'fail'}
+            teamType={ddjResult.teamType ?? 'Up-Down'}
             myId={ddjResult?.myId ?? '0'}
             myTeamName={ddjResult?.myTeamName ?? '기권'}
             myTeamId={ddjResult?.myTeamId ?? 0}
@@ -153,16 +168,17 @@ export default function DdjRoom() {
       ) : (
         <Share shareUrl={shareUrl}></Share>
       )}
-      {showResult && (
+      <div className="fixed bottom-5 w-[400px]">{showResult && (
         <Button
-          content={'재경기'}
+          content={'다시 하기'}
           color="var(--color-menuGreen)"
           textColor="black"
           onClick={() => {
             socket.emit('replay');
           }}
         ></Button>
-      )}
+      )}</div>
+      
     </div>
   );
 }

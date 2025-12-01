@@ -1,0 +1,172 @@
+name: CI/CD via SSH (dev & prod with different ports)
+
+on:
+  push:
+    branches: ['develop', 'main']
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & Test
+        run: |
+          npm ci
+          npm test --if-present
+
+      - name: Build
+        run: npm run build
+
+      # --- 빌드 산출물 점검 (standalone 필수 폴더 확인) ---
+      - name: Verify standalone output
+        run: |
+          test -f .next/standalone/server.js || (echo "::error::'.next/standalone/server.js' not found. Add { output: 'standalone' } to next.config.js" && exit 1)
+
+      # 디버깅을 위한 단계 추가
+      # - name: Verify Build Artifacts
+      #   run: |
+      #     echo "--- Checking contents of .next directory ---"
+      #     ls -lR .next
+      #     if [ ! -f .next/routes-manifest.json ]; then
+      #       echo "::error::routes-manifest.json was not created after build!"
+      #       exit 1
+      #     fi
+
+      - name: Archive build
+        run: |
+          rm -f build.tgz
+          mkdir -p release
+          # 실행 런타임(의존성 포함)
+          cp -a .next/standalone/* release/
+          # .next 폴더 전체를 release 폴더 안으로 복사
+          # static, BUILD_ID, routes-manifest.json 등이 모두 포함됨
+          cp -a .next release/
+          # 서버 파일 폴더 - 환경에 따라 필요 없는 경우도 많지만 안전하게 병행 가능
+          if [ -d .next/server ]; then
+            mkdir -p release/.next
+            cp -a .next/server release/.next/server
+          fi
+          # ★ 매니페스트(필요한 것들 복사)
+          for f in routes-manifest.json prerender-manifest.json app-paths-manifest.json
+          do
+            [ -f ".next/$f" ] && cp -a ".next/$f" "release/.next/$f" || true
+          done
+          # (선택) 기타 매니페스트도 있으면 복사
+          for f in build-manifest.json react-loadable-manifest.json font-manifest.json next-font-manifest.json server-reference-manifest.json
+          do
+            [ -f ".next/$f" ] && cp -a ".next/$f" "release/.next/$f" || true
+          done
+          # public 있으면 포함
+          cp -a public release/public 2>/dev/null || true
+          # PM2 설정파일 있으면 포함
+          cp -a ecosystem.config.* release/ 2>/dev/null || true
+          # 산출물 유효성 점검
+          test -f release/server.js || { echo "::error::release/server.js missing"; exit 1; }
+          test -f release/.next/BUILD_ID || { echo "::error::.next/BUILD_ID missing"; exit 1; }
+          test -d release/.next/static || { echo "::warning::.next/static missing (정적자산 없는 프로젝트면 무시 가능)"; }
+          # 압축    
+          tar -czf build.tgz -C release .
+
+      # SSH key setup
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 2222 -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      # ===== develop 브랜치 배포 =====
+      - name: Upload to Server (DEV)
+        if: github.ref_name == 'develop'
+        run: |
+          # 잘못 만들어진 디렉터리/파일 정리
+          ssh -p 2222 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "rm -rf /tmp/build.tgz"
+          scp -P 2222 build.tgz ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
+
+      - name: Remote deploy (DEV)
+        if: github.ref_name == 'develop'
+        run: |
+          ssh -p 2222 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "APP_PORT=8004 APP_NAME='dedenjji-dev' DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' bash -s" << 'REMOTE'
+          set -euo pipefail
+          : "${DEPLOY_PATH:?DEPLOY_PATH required}"
+
+          # 산출물 존재/크기 확인
+          if [ ! -f /tmp/build.tgz ]; then
+            echo "ERROR: /tmp/build.tgz not found"
+            exit 1
+          fi
+          if [ ! -s /tmp/build.tgz ]; then
+            echo "ERROR: /tmp/build.tgz is empty"
+            exit 1
+          fi
+
+          mkdir -p "$DEPLOY_PATH"
+          tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
+          rm -f /tmp/build.tgz
+
+          cd "$DEPLOY_PATH"
+
+          # PM2 실행 (standalone의 server.js 사용)
+          if command -v pm2 >/dev/null 2>&1; then
+            pm2 delete dedenjji-dev 2>/dev/null || true   # 이름은 당신 것에 맞게
+            PORT="$APP_PORT" pm2 start "$DEPLOY_PATH/server.js" --name "$APP_NAME"
+            pm2 save
+          else
+            echo "WARN: pm2 not found; files deployed only."
+          fi
+          REMOTE
+
+      # ===== main 브랜치 배포 =====
+      - name: Upload to Server (PROD)
+        if: github.ref_name == 'main'
+        run: |
+          scp -P 2222 build.tgz \
+            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
+
+      - name: Remote deploy (PROD)
+        if: github.ref_name == 'main'
+        run: |
+          ssh -p 2222 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "APP_PORT=8002 APP_NAME='dedenjji-prod' DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' bash -s" << 'REMOTE'
+          set -euo pipefail
+          : "${DEPLOY_PATH:?DEPLOY_PATH required}"
+
+          # 산출물 존재/크기 확인
+          if [ ! -f /tmp/build.tgz ]; then
+            echo "ERROR: /tmp/build.tgz not found"
+            exit 1
+          fi
+          if [ ! -s /tmp/build.tgz ]; then
+            echo "ERROR: /tmp/build.tgz is empty"
+            exit 1
+          fi
+
+          mkdir -p "$DEPLOY_PATH"
+          tar -xzf /tmp/build.tgz -C "$DEPLOY_PATH"
+          rm -f /tmp/build.tgz
+
+          cd "$DEPLOY_PATH"
+
+          # PM2 실행 (standalone의 server.js 사용)
+          if command -v pm2 >/dev/null 2>&1; then
+            pm2 delete dedenjji-prod 2>/dev/null || true   # 이름은 당신 것에 맞게
+            PORT="$APP_PORT" pm2 start "$DEPLOY_PATH/server.js" --name "$APP_NAME"
+            pm2 save
+          else
+            echo "WARN: pm2 not found; files deployed only."
+          fi
+          REMOTE

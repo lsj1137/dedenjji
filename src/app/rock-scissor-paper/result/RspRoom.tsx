@@ -11,6 +11,8 @@ import RspOptions from './RspOptions';
 import Button from '@/components/Button';
 import { toResult } from '@/utils/rspResultConverter';
 import RspResult from './RspResult';
+import { useRspSettingStore } from '@/store/useSettingsStore';
+import { getRandomRSP } from '@/utils/autoSelect';
 
 export default function RspRoom() {
   const searchParams = useSearchParams();
@@ -20,11 +22,13 @@ export default function RspRoom() {
   const [currentUser, setCurrentUser] = useState<number>(0);
   const [allJoined, setAllJoined] = useState<boolean>(false);
   const [showResult, setShowResult] = useState<boolean>(false);
+  const [goHome, setGoHome] = useState<boolean>(false);
   const [rspResult, setResult] = useState<RspResultType>();
   const [countDown, setCountDown] = useState<number>(3);
   const [selected, setSelected] = useState<string>('abstention');
   const resultRef = useRef(rspResult);
   const timerInterval = useRef<NodeJS.Timeout>(null);
+  const { autoSubmit } = useRspSettingStore();
 
   const socket = getSocket();
 
@@ -51,9 +55,11 @@ export default function RspRoom() {
     let tempCode = '';
     if (inviteCode) {
       setUrl(`${window.location.href}`);
+      setGoHome(true);
     } else {
       tempCode = getRandomRoomId();
       setUrl(`${window.location.href}&inviteCode=${tempCode}`);
+      setGoHome(false);
     }
     socket.emit('joinRoom', {
       roomId: inviteCode ?? tempCode,
@@ -116,7 +122,12 @@ export default function RspRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
-      socket.emit('submitRspChoice', selected);
+      if (selected==='abstention' && autoSubmit) {
+        const temp = getRandomRSP();
+        socket.emit('submitRspChoice', temp);
+      } else {
+        socket.emit('submitRspChoice', selected);
+      }
       setShowResult(true);
       if (timerInterval.current) {
         clearInterval(timerInterval.current);
@@ -126,7 +137,7 @@ export default function RspRoom() {
 
   return (
     <div className="h-full">
-      <Header title="가위바위보" goHome={false} canSet={true} onSet={() => {}}></Header>
+      <Header title="가위바위보" goHomeWhenPop={goHome} canSet={false}></Header>
       <Connects
         color="var(--color-menuBlue)"
         currentUser={currentUser}
@@ -152,8 +163,7 @@ export default function RspRoom() {
       ) : (
         <Share shareUrl={shareUrl}></Share>
       )}
-      <div className="h-20 w-[400px]" />
-      <div className="absolute bottom-5 w-[400px]">
+      <div className="fixed bottom-5 w-[400px]">
         {showResult && (
           <Button
             content={'재경기'}

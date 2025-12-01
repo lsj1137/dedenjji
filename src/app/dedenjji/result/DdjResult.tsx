@@ -7,13 +7,14 @@ import { useState } from 'react';
 
 export default function DdjResult({
   type,
+  teamType,
   myId,
   myTeamName,
   myTeamId,
   teams,
   changeName,
 }: DdjResultType) {
-  const myTeamIcon = type === 'fail' ? '🥲' : myTeamName === '위' ? '👆' : '👇';
+  const myTeamIcon = type === 'fail' ? '😥' : myTeamName === teamType.teamInfos[0][1] ? teamType.teamInfos[0][0] : teamType.teamInfos[1][0];
   const [myName, setMyName] = useState(
     teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)?.name ??
       '멤버 0'
@@ -60,6 +61,7 @@ export default function DdjResult({
         </button>
       </div>
       <ResultList teams={teams} isTeam={true}></ResultList>
+      <div className='h-20'></div>
     </div>
   );
 }

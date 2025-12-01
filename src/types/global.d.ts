@@ -32,6 +32,7 @@ interface TeamMate {
 
 interface DdjResultType {
   type: string;
+  teamType: TeamData;
   myId: string;
   myTeamName: string;
   myTeamId: number;
@@ -103,10 +104,12 @@ interface CounterProps {
 // Hearder;
 
 interface HeaderProps {
-  goHome: boolean;
+  canPop?: boolean;
+  goHomeWhenPop: boolean;
   canSet: boolean;
   onSet?: () => void;
   title: string;
+  onPop?: () => void;
 }
 
 // Option;
@@ -134,6 +137,7 @@ interface teamInfo {
 
 interface ddjResponse {
   type: string;
+  teamType: string;
   choice: string;
   upside?: [];
   downside?: [];

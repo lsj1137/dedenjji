@@ -6,10 +6,10 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 
-export default function Header({ goHome, canSet, onSet, title }: HeaderProps) {
+export default function Header({ goHomeWhenPop: goHome, canSet, onSet, title }: HeaderProps) {
   const router = useRouter();
   return (
-    <header className="flex justify-between items-center py-4">
+    <header className="flex h-[88px] w-full justify-between items-center py-4">
       <button
         onClick={goHome ? () => router.push('/') : () => router.back()}
         className="flex p-4 gap-2"

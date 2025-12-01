@@ -11,14 +11,7 @@ export default function DrawResult() {
 
   return (
     <div className="flex flex-col h-dvh">
-      <Header
-        title="제비뽑기"
-        goHome={false}
-        canSet={true}
-        onSet={() => {
-          console.log('hi');
-        }}
-      ></Header>
+      <Header title="제비뽑기" goHomeWhenPop={false} canSet={false}></Header>
       <div className="flex flex-col gap-3 text-center font-semibold">
         <p className="text-normal">
           원하는 종이를 고르고 결과를 확인 후<br />
