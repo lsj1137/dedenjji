@@ -19,7 +19,7 @@ interface DedenjjiSettingStore {
   setAutoSubmit: (autoSubmit: boolean) => void;
 }
 
-export const useDedenjjiTeamStore = create<DedenjjiSettingStore>(set => ({
+export const useDdjSettingStore = create<DedenjjiSettingStore>(set => ({
   teamType: DedenjjiTeams[0],
   autoSubmit: false,
   setTeamType: teamData => set({ teamType: teamData }),

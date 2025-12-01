@@ -11,6 +11,8 @@ import RspOptions from './DdjOptions';
 import Button from '@/components/Button';
 import DdjResult from './DdjResult';
 import { toResult } from '@/utils/ddjResultConverter';
+import { useDdjSettingStore } from '@/store/useSettingsStore';
+import { getRandomDdj } from '@/utils/autoSelect';
 
 export default function DdjRoom() {
   const searchParams = useSearchParams();
@@ -27,6 +29,7 @@ export default function DdjRoom() {
   const resultRef = useRef(ddjResult);
   const timerInterval = useRef<NodeJS.Timeout>(null);
   const socket = getSocket();
+  const { autoSubmit, teamType } = useDdjSettingStore();
 
   function ddjResultHandler(result: ddjResponse) {
     const newResult: DdjResultType = toResult(socket.id ?? '', result);
@@ -119,7 +122,12 @@ export default function DdjRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
-      socket.emit('submitDdjChoice', selected);
+      if (selected==='abstention' && autoSubmit) {
+        let temp = getRandomDdj();
+        socket.emit('submitDdjChoice', temp);
+      } else {
+        socket.emit('submitDdjChoice', selected);
+      }
       setShowResult(true);
       if (timerInterval.current) {
         clearInterval(timerInterval.current);
