@@ -152,8 +152,7 @@ export default function RspRoom() {
       ) : (
         <Share shareUrl={shareUrl}></Share>
       )}
-      <div className="h-20 w-[400px]" />
-      <div className="absolute bottom-5 w-[400px]">
+      <div className="fixed bottom-5 w-[400px]">
         {showResult && (
           <Button
             content={'재경기'}

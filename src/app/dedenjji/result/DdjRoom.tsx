@@ -153,7 +153,7 @@ export default function DdjRoom() {
       ) : (
         <Share shareUrl={shareUrl}></Share>
       )}
-      {showResult && (
+      <div className="fixed bottom-5 w-[400px]">{showResult && (
         <Button
           content={'재경기'}
           color="var(--color-menuGreen)"
@@ -162,7 +162,8 @@ export default function DdjRoom() {
             socket.emit('replay');
           }}
         ></Button>
-      )}
+      )}</div>
+      
     </div>
   );
 }
