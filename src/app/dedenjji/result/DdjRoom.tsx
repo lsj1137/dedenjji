@@ -13,6 +13,7 @@ import DdjResult from './DdjResult';
 import { toResult } from '@/utils/ddjResultConverter';
 import { useDdjSettingStore } from '@/store/useSettingsStore';
 import { getRandomDdj } from '@/utils/autoSelect';
+import { ddjResponse, DdjResultType } from '@/types/global';
 
 export default function DdjRoom() {
   const searchParams = useSearchParams();
@@ -33,6 +34,7 @@ export default function DdjRoom() {
 
   function ddjResultHandler(result: ddjResponse) {
     const newResult: DdjResultType = toResult(socket.id ?? '', result);
+    console.log(newResult);
     setResult(newResult);
     setShowResult(true);
   }
@@ -122,12 +124,14 @@ export default function DdjRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
+      let data = {'choice':'abstention', 'teamType': teamType.teamType.toString()};
       if (selected==='abstention' && autoSubmit) {
-        let temp = getRandomDdj();
-        socket.emit('submitDdjChoice', temp);
+        data['choice'] = getRandomDdj();
       } else {
-        socket.emit('submitDdjChoice', selected);
+        data['choice'] = selected;
       }
+      console.log(data)
+      socket.emit('submitDdjChoice', data);
       setShowResult(true);
       if (timerInterval.current) {
         clearInterval(timerInterval.current);
@@ -147,6 +151,7 @@ export default function DdjRoom() {
         showResult && ddjResult ? (
           <DdjResult
             type={ddjResult?.type ?? 'fail'}
+            teamType={ddjResult.teamType ?? 'Up-Down'}
             myId={ddjResult?.myId ?? '0'}
             myTeamName={ddjResult?.myTeamName ?? '기권'}
             myTeamId={ddjResult?.myTeamId ?? 0}
@@ -166,7 +171,7 @@ export default function DdjRoom() {
       )}
       <div className="fixed bottom-5 w-[400px]">{showResult && (
         <Button
-          content={'재경기'}
+          content={'다시 하기'}
           color="var(--color-menuGreen)"
           textColor="black"
           onClick={() => {

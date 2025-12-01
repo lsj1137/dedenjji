@@ -1,5 +1,7 @@
 /// <reference types="react" />
 
+import { TeamData } from "./teamTypes";
+
 // Error
 
 interface ErrorProps {
@@ -32,6 +34,7 @@ interface TeamMate {
 
 interface DdjResultType {
   type: string;
+  teamType: TeamData;
   myId: string;
   myTeamName: string;
   myTeamId: number;
@@ -136,6 +139,7 @@ interface teamInfo {
 
 interface ddjResponse {
   type: string;
+  teamType: string;
   choice: string;
   upside?: [];
   downside?: [];

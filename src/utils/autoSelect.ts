@@ -1,5 +1,5 @@
 export function getRandomRSP() {
-    let num = Math.random()*3;
+    const num = Math.random()*3;
     let result = "";
     if (num<1) {
         result = "rock";
@@ -12,7 +12,7 @@ export function getRandomRSP() {
 }
 
 export function getRandomDdj() {
-    let num = Math.random()*2;
+    const num = Math.random()*2;
     let result = "";
     if (num<1) {
         result = "upside";

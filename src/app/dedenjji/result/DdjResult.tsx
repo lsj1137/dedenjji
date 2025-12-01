@@ -4,16 +4,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import ResultList from '@/components/ResultList';
 import { useState } from 'react';
+import { DdjResultType } from '@/types/global';
 
 export default function DdjResult({
   type,
+  teamType,
   myId,
   myTeamName,
   myTeamId,
   teams,
   changeName,
 }: DdjResultType) {
-  const myTeamIcon = type === 'fail' ? '😥' : myTeamName === '위' ? '👆' : '👇';
+  const myTeamIcon = type === 'fail' ? '😥' : myTeamName === teamType.teamInfos[0][1] ? teamType.teamInfos[0][0] : teamType.teamInfos[1][0];
   const [myName, setMyName] = useState(
     teams.find(team => team.id === myTeamId)?.members.find(member => member.id === myId)?.name ??
       '멤버 0'
