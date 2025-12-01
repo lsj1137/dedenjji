@@ -15,12 +15,12 @@ export default function Auto() {
     <div>
       <Header title="설정" goHomeWhenPop={false} canSet={false}></Header>
       <div className="flex flex-col gap-10 my-20">
-        <SettingOptionDropdown
+        {/* <SettingOptionDropdown
           title="팀 종류"
           selected={teamType}
           setSelected={setTeamType}
           optionList={DedenjjiTeams}
-        ></SettingOptionDropdown>
+        ></SettingOptionDropdown> */}
         <SettingOptionToggleButton
           title="기권 없음 (자동 선택)"
           isActive={autoSubmit}
