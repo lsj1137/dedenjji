@@ -11,6 +11,8 @@ import RspOptions from './RspOptions';
 import Button from '@/components/Button';
 import { toResult } from '@/utils/rspResultConverter';
 import RspResult from './RspResult';
+import { useRspSettingStore } from '@/store/useSettingsStore';
+import { getRandomRSP } from '@/utils/autoSelect';
 
 export default function RspRoom() {
   const searchParams = useSearchParams();
@@ -26,6 +28,7 @@ export default function RspRoom() {
   const [selected, setSelected] = useState<string>('abstention');
   const resultRef = useRef(rspResult);
   const timerInterval = useRef<NodeJS.Timeout>(null);
+  const { autoSubmit } = useRspSettingStore();
 
   const socket = getSocket();
 
@@ -119,7 +122,12 @@ export default function RspRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
-      socket.emit('submitRspChoice', selected);
+      if (selected==='abstention' && autoSubmit) {
+        let temp = getRandomRSP();
+        socket.emit('submitRspChoice', temp);
+      } else {
+        socket.emit('submitRspChoice', selected);
+      }
       setShowResult(true);
       if (timerInterval.current) {
         clearInterval(timerInterval.current);
