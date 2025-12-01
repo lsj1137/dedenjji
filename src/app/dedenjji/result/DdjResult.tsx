@@ -60,6 +60,7 @@ export default function DdjResult({
         </button>
       </div>
       <ResultList teams={teams} isTeam={true}></ResultList>
+      <div className='h-20'></div>
     </div>
   );
 }
