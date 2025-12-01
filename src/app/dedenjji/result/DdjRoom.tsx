@@ -20,6 +20,7 @@ export default function DdjRoom() {
   const [currentUser, setCurrentUser] = useState<number>(0);
   const [allJoined, setAllJoined] = useState<boolean>(false);
   const [showResult, setShowResult] = useState<boolean>(false);
+  const [goHome, setGoHome] = useState<boolean>(false);
   const [ddjResult, setResult] = useState<DdjResultType>();
   const [countDown, setCountDown] = useState<number>(3);
   const [selected, setSelected] = useState<string>('abstention');
@@ -82,9 +83,11 @@ export default function DdjRoom() {
     let tempCode = '';
     if (inviteCode) {
       setUrl(`${window.location.href}`);
+      setGoHome(true);
     } else {
       tempCode = getRandomRoomId();
       setUrl(`${window.location.href}&inviteCode=${tempCode}`);
+      setGoHome(false);
     }
     socket.emit('joinRoom', {
       roomId: inviteCode ?? tempCode,
@@ -126,7 +129,7 @@ export default function DdjRoom() {
 
   return (
     <div className="h-full">
-      <Header title="데덴찌" goHomeWhenPop={false} canSet={false}></Header>
+      <Header title="데덴찌" goHomeWhenPop={goHome} canSet={false}></Header>
       <Connects
         color="var(--color-textGreen)"
         currentUser={currentUser}

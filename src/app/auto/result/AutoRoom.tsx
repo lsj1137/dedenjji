@@ -19,6 +19,7 @@ export default function AutoRoom() {
   const [shareUrl, setUrl] = useState('');
   const [currentUser, setCurrentUser] = useState<number>(0);
   const [showResult, setShowResult] = useState<boolean>(false);
+  const [goHome, setGoHome] = useState<boolean>(false);
   const [splitResult, setResult] = useState<Result>();
   const resultRef = useRef(splitResult);
   const { teamType } = useAutoTeamStore();
@@ -58,9 +59,11 @@ export default function AutoRoom() {
     let tempCode = '';
     if (inviteCode) {
       setUrl(`${window.location.href}`);
+      setGoHome(true);
     } else {
       tempCode = getRandomRoomId();
       setUrl(`${window.location.href}&inviteCode=${tempCode}`);
+      setGoHome(false);
     }
     socket.emit('joinRoom', {
       roomId: inviteCode ?? tempCode,
@@ -77,7 +80,7 @@ export default function AutoRoom() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title="자동" goHomeWhenPop={false} canSet={false}></Header>
+      <Header title="자동" goHomeWhenPop={goHome} canSet={false}></Header>
       <Connects color="var(--color-menuRed)" currentUser={currentUser} totalUsers={Number(total)} />
       {showResult ? (
         <AutoResult
