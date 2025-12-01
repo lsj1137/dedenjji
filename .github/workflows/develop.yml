@@ -86,20 +86,20 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -p 2222 -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
 
       # ===== develop 브랜치 배포 =====
       - name: Upload to Server (DEV)
         if: github.ref_name == 'develop'
         run: |
           # 잘못 만들어진 디렉터리/파일 정리
-          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "rm -rf /tmp/build.tgz"
-          scp build.tgz ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
+          ssh -p 2222 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "rm -rf /tmp/build.tgz"
+          scp -P 2222 build.tgz ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
 
       - name: Remote deploy (DEV)
         if: github.ref_name == 'develop'
         run: |
-          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          ssh -p 2222 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
           "APP_PORT=8004 APP_NAME='dedenjji-dev' DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' bash -s" << 'REMOTE'
           set -euo pipefail
           : "${DEPLOY_PATH:?DEPLOY_PATH required}"
@@ -134,13 +134,13 @@ jobs:
       - name: Upload to Server (PROD)
         if: github.ref_name == 'main'
         run: |
-          scp build.tgz \
+          scp -P 2222 build.tgz \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/build.tgz
 
       - name: Remote deploy (PROD)
         if: github.ref_name == 'main'
         run: |
-          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          ssh -p 2222 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
           "APP_PORT=8002 APP_NAME='dedenjji-prod' DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' bash -s" << 'REMOTE'
           set -euo pipefail
           : "${DEPLOY_PATH:?DEPLOY_PATH required}"
