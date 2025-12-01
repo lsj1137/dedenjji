@@ -1,7 +1,5 @@
 /// <reference types="react" />
 
-import { TeamData } from "./teamTypes";
-
 // Error
 
 interface ErrorProps {

@@ -13,7 +13,6 @@ import DdjResult from './DdjResult';
 import { toResult } from '@/utils/ddjResultConverter';
 import { useDdjSettingStore } from '@/store/useSettingsStore';
 import { getRandomDdj } from '@/utils/autoSelect';
-import { ddjResponse, DdjResultType } from '@/types/global';
 
 export default function DdjRoom() {
   const searchParams = useSearchParams();
@@ -124,7 +123,7 @@ export default function DdjRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
-      let data = {'choice':'abstention', 'teamType': teamType.teamType.toString()};
+      const data = {'choice':'abstention', 'teamType': teamType.teamType.toString()};
       if (selected==='abstention' && autoSubmit) {
         data['choice'] = getRandomDdj();
       } else {

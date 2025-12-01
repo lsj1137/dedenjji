@@ -181,7 +181,7 @@ const dayNight = [
 
 const policeThief = [
   ['👮', '경찰'],
-  ['👷', '도둑'],
+  ['🧛‍♂️', '도둑'],
 ];
 
 const dragonTiger = [

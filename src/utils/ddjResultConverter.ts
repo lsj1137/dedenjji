@@ -1,5 +1,4 @@
-import { ddjResponse, DdjResultType } from "@/types/global";
-import { DedenjjiTeams, TeamType } from "@/types/teamTypes";
+import { DedenjjiTeams } from "@/types/teamTypes";
 
 export function toResult(id: string, result: ddjResponse): DdjResultType {
   const newResult: DdjResultType = {
