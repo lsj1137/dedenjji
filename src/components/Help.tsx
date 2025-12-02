@@ -5,9 +5,7 @@ import {
   faFlag,
   faXmark,
   faQrcode,
-  faLink,
   faUsers,
-  faPlay,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHandBackFist, faHandScissors, faHand } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
