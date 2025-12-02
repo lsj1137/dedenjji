@@ -13,7 +13,7 @@
 👉 **Live Demo:** [https://dedenjji.3jun.store](https://dedenjji.3jun.store)
 
 ## 📸 실행 화면 (Preview)
-| 메인 화면 | 팀 나누기 설정 | 결과 화면 |
+| 메인 화면 | 파티원 모집 화면 | 결과 화면 |
 | :---: | :---: | :---: |
 | <img src="./public/demo_main.png" width="200" /> | <img src="./public/demo_waiting_room.png" width="200" /> | <img src="./public/demo_result.png" width="200" /> |
 
