@@ -122,7 +122,7 @@ export default function RspRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
-      if (selected==='abstention' && autoSubmit) {
+      if (selected === 'abstention' && autoSubmit) {
         const temp = getRandomRSP();
         socket.emit('submitRspChoice', temp);
       } else {

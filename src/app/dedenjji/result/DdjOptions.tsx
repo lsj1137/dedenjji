@@ -11,13 +11,23 @@ export default function RspOptions({
     <div className="flex gap-5">
       <div className="flex flex-col items-center gap-2">
         <button onClick={() => setSelected('upside')}>
-          <PlayOption img="/back-hand.png" alt="위" selected={selected === 'upside'} bgColor=' bg-menuGreen'></PlayOption>
+          <PlayOption
+            img="/back-hand.png"
+            alt="위"
+            selected={selected === 'upside'}
+            bgColor=" bg-menuGreen"
+          ></PlayOption>
         </button>
         <p>위</p>
       </div>
       <div className="flex flex-col items-center gap-2">
         <button onClick={() => setSelected('downside')}>
-          <PlayOption img="/paper.png" alt="아래" selected={selected === 'downside'} bgColor=' bg-menuGreen'></PlayOption>
+          <PlayOption
+            img="/paper.png"
+            alt="아래"
+            selected={selected === 'downside'}
+            bgColor=" bg-menuGreen"
+          ></PlayOption>
         </button>
         <p>아래</p>
       </div>

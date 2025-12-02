@@ -123,13 +123,13 @@ export default function DdjRoom() {
 
   useEffect(() => {
     if (countDown < 1) {
-      const data = {'choice':'abstention', 'teamType': teamType.teamType.toString()};
-      if (selected==='abstention' && autoSubmit) {
+      const data = { choice: 'abstention', teamType: teamType.teamType.toString() };
+      if (selected === 'abstention' && autoSubmit) {
         data['choice'] = getRandomDdj();
       } else {
         data['choice'] = selected;
       }
-      console.log(data)
+      console.log(data);
       socket.emit('submitDdjChoice', data);
       setShowResult(true);
       if (timerInterval.current) {
@@ -168,17 +168,18 @@ export default function DdjRoom() {
       ) : (
         <Share shareUrl={shareUrl}></Share>
       )}
-      <div className="fixed bottom-5 w-[400px]">{showResult && (
-        <Button
-          content={'다시 하기'}
-          color="var(--color-menuGreen)"
-          textColor="black"
-          onClick={() => {
-            socket.emit('replay');
-          }}
-        ></Button>
-      )}</div>
-      
+      <div className="fixed bottom-5 w-[400px]">
+        {showResult && (
+          <Button
+            content={'다시 하기'}
+            color="var(--color-menuGreen)"
+            textColor="black"
+            onClick={() => {
+              socket.emit('replay');
+            }}
+          ></Button>
+        )}
+      </div>
     </div>
   );
 }

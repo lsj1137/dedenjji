@@ -52,7 +52,7 @@ export default function RspResult({ myId, myTeamId, win, teams, changeName }: Rs
         </button>
       </div>
       <ResultList teams={teams} isTeam={false}></ResultList>
-      <div className='h-20'></div>
+      <div className="h-20"></div>
     </div>
   );
 }
