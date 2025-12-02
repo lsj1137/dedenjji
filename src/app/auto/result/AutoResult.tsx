@@ -48,7 +48,7 @@ export default function AutoResult({ myId, myTeamId, teams, changeName }: Result
         </button>
       </div>
       <ResultList teams={teams}></ResultList>
-      <div className='h-20'></div>
+      <div className="h-20"></div>
     </div>
   );
 }
