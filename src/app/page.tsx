@@ -1,11 +1,25 @@
+'use client';
+
+import Help from '@/components/Help';
 import Menu from '@/components/Menu';
+import { useState } from 'react';
 
 export default function Home() {
+  const [showHelp, setShowHelp] = useState(false);
+
   return (
     <>
-      <div className="absolute top-3 right-3 w-8 h-8 rounded-[16px] border-textGray border-[1px] text-textGray text-[20px] bg-white flex items-center justify-center">
-        ?
-      </div>
+      {showHelp ? (
+        <Help setShowHelp={setShowHelp}></Help>
+      ) : (
+        <div
+          className="absolute top-3 right-3 w-8 h-8 rounded-[16px] border-textGray border-[1px] text-textGray text-[20px] bg-white flex items-center justify-center cursor-pointer"
+          onClick={() => setShowHelp(prev => !prev)}
+        >
+          ?
+        </div>
+      )}
+
       <div className="flex flex-col h-full">
         <div className="flex flex-1 flex-col font-schoolbell text-center  justify-center items-center">
           <p className="text-title">De Den JJi</p>
